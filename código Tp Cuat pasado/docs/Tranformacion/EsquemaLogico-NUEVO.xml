@@ -1,0 +1,60 @@
+<!DOCTYPE note SYSTEM "modelo-comp.dtd">
+<!-- PROYECTO -->
+<Proyecto>
+	<!-- ENTIDAD -->
+	<Entidad id="_0" tipo="MAESTRA_COSA">
+		<Nombre />
+		<!-- ATRIBUTO -->
+		<Atributos>
+			<Atributo id="_1" tipo="CARACTERIZACION">
+				<Nombre />
+				<Formula /> <!-- Caracterizacion o derivado -->
+			</Atributo>
+		</Atributos>
+		
+		<Identificadores>
+			<Identificador>
+				<RefAtributo idref="_1" />
+			</Identificador>
+		</Identificadores>
+	</Entidad>
+	
+	<!-- RELACION -->
+	<Relacion id="_5" tipo="ASOCIACION">
+		<Nombre />
+		<Participantes>
+			<Participante>
+				<RefEntidad idref="_1" />
+				<Cardinalidad min="" max="" />
+				<!-- Descripcion del Rol -->
+				<Rol></Rol>
+			</Participante>
+		</Participantes>
+		<Atributos>
+			<Atributo id="_3" tipo="CARACTERIZACION">
+				<Nombre />
+				<!-- Caracterizacion o derivado -->
+				<Formula />
+			</Atributo>
+		</Atributos>
+	</Relacion>
+	
+	<!-- DIAGRAMA -->
+	<Diagrama id="_7">
+		<Nombre />
+		<Componentes>
+			<!-- 0..* -->
+			<Componente idref="_2" />
+		</Componentes>
+		<Diagramas>
+			<!-- 0..* -->
+			<Diagrama id="_8">
+				<Nombre></Nombre>
+				<Validacion estado="VALIDADO">
+					<Observaciones />
+				</Validacion>
+				<!-- Misma estructura anterior -->
+			</Diagrama>
+		</Diagramas>
+	</Diagrama>
+</Proyecto>
