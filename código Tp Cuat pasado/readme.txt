@@ -1,5 +1,5 @@
 La entrega contiene las siguientes carpetas:
-	- docs
+	-    docs
 	- src
 
 docs:
