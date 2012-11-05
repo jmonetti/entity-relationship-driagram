@@ -141,6 +141,17 @@ public class MenuBuilder implements Observer {
 		menuItem.setText("Validar &Proyecto");
 		menuItem.addSelectionListener(AccionesProvider.validarProyecto);
 		proyectoItems.add(menuItem);
+		
+		/*Agregado para empezar a poner los nuevos comandos*/
+	
+		menuItem = new MenuItem(menuBar, SWT.CASCADE);
+		menuItem.setText("Opciones");
+		
+		menu = new Menu(principal.getShell(), SWT.DROP_DOWN);
+		menuItem.setMenu(menu);
+		
+		menuItem = new MenuItem(menu, SWT.PUSH);
+		menuItem.setText("&Pasar Diagrama a modelo de tablas...");
 
 		/*
 		 * Ayuda
