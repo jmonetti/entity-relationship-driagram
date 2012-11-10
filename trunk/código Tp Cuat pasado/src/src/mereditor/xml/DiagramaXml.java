@@ -73,4 +73,17 @@ public class DiagramaXml extends DiagramaControl implements Xmlizable {
 
 		this.validacion = parser.obtenerValidacion(elemento);
 	}
+
+	@Override
+	public Element toXml(ModeloLogicoParserXml parser) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void fromXml(Element elemento, ModeloLogicoParserXml parser)
+			throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
 }

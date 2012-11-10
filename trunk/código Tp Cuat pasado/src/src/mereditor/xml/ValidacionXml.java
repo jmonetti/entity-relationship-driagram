@@ -28,4 +28,17 @@ public class ValidacionXml extends Validacion implements Xmlizable {
 		this.estado = EstadoValidacion.valueOf(parser.obtenerEstado(elemento));
 		this.observaciones = parser.obtenerObservaciones(elemento);
 	}
+
+	@Override
+	public Element toXml(ModeloLogicoParserXml parser) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void fromXml(Element elemento, ModeloLogicoParserXml parser)
+			throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
 }

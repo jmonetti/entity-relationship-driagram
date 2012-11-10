@@ -14,13 +14,13 @@ import mereditor.modelo.Relacion;
 import mereditor.modelo.Relacion.EntidadRelacion;
 import mereditor.modelo.Validacion.EstadoValidacion;
 import mereditor.modelo.base.Componente;
-import mereditor.xml.ParserXml;
+import mereditor.xml.*;
 
 import org.w3c.dom.Document;
 
-public class ParserXmlTest extends TestCase {
+public class ParserLogicoXmlTest extends TestCase {
 
-	private static final String PATH_TEST = "xml/ejemplos/test.xml";
+	private static final String PATH_TEST = "xml/ejemplos/testLogico.xml";
 	private ParserXml parser;
 
 	protected void setUp() throws Exception {
@@ -29,10 +29,10 @@ public class ParserXmlTest extends TestCase {
 	}
 
 	public void testEncontrarEntidadPorId() throws Exception {
-		Entidad entidad = (Entidad) this.parser.resolver("_1");
+		Entidad entidad = (Entidad) this.parser.resolverLogico("_1");
 		assertTrue(entidad != null);
 	}
-
+/*
 	public void testEncontrarEntidadPorIdVerificarCantidadAtributos() throws Exception {
 		Entidad entidad = (Entidad) this.parser.resolver("_1");
 		assertEquals(entidad.getAtributos().size(), 4);
@@ -163,6 +163,6 @@ public class ParserXmlTest extends TestCase {
 		this.parser = new ParserXml(proyecto);
 		Document doc =  this.parser.generarXmlComponentes();
 		assertTrue(doc != null);
-	}
+	}*/
 
 }

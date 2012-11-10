@@ -70,4 +70,17 @@ public class RelacionXml extends RelacionControl implements Xmlizable {
 			this.addParticipante(entidadRelacion);
 		}
 	}
+
+	@Override
+	public Element toXml(ModeloLogicoParserXml parser) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void fromXml(Element elemento, ModeloLogicoParserXml parser)
+			throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
 }

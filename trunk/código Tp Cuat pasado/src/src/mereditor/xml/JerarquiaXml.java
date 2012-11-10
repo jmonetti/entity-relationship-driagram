@@ -46,4 +46,17 @@ public class JerarquiaXml extends JerarquiaControl implements Xmlizable {
 			this.derivadas.add((Entidad) componente);
 		}
 	}
+
+	@Override
+	public Element toXml(ModeloLogicoParserXml parser) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void fromXml(Element elemento, ModeloLogicoParserXml parser)
+			throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
 }
