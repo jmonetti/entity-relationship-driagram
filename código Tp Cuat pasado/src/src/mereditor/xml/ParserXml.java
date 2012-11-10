@@ -23,6 +23,7 @@ public class ParserXml {
 
 	protected Element root;
 	private ModeloParserXml modeloParser;
+	private ModeloLogicoParserXml modeloLogicoParser;
 	private RepresentacionParserXml representacionParser;
 
 	public ParserXml() throws Exception {
@@ -33,6 +34,7 @@ public class ParserXml {
 		this();
 		this.proyecto = proyecto;
 		this.modeloParser = new ModeloParserXml(this.proyecto);
+		this.modeloLogicoParser = new ModeloLogicoParserXml(this.proyecto);
 		this.representacionParser = new RepresentacionParserXml(this.proyecto);
 	}
 
@@ -64,6 +66,8 @@ public class ParserXml {
 				.getTextContent();
 
 		this.modeloParser = new ModeloParserXml(this.proyecto, dir + modeloPath);
+		this.modeloLogicoParser = new ModeloLogicoParserXml(this.proyecto, dir + modeloPath);
+		
 		this.representacionParser = new RepresentacionParserXml(this.proyecto, dir
 				+ representacionPath);
 	}
@@ -97,6 +101,12 @@ public class ParserXml {
 		this.representacionParser.parsearRepresentacion();
 		return this.proyecto;
 	}
+	
+	public Proyecto parsearLogico() throws Exception {
+		this.modeloLogicoParser.parsearModelo();
+		this.representacionParser.parsearRepresentacion();
+		return this.proyecto;
+	}
 
 	/**
 	 * Obtiene el valor del atributo id de un elemento.
@@ -118,6 +128,10 @@ public class ParserXml {
 	 */
 	public Componente resolver(String id) throws Exception {
 		return this.modeloParser.resolver(id);
+	}
+	
+	public Componente resolverLogico(String id) throws Exception {
+		return this.modeloLogicoParser.resolver(id);
 	}
 
 	/**
@@ -152,6 +166,10 @@ public class ParserXml {
 	 */
 	public Document generarXmlComponentes() throws DOMException, Exception {
 		return this.modeloParser.generarXml();
+	}
+	
+	public Document generarXmlComponentesLogicos() throws DOMException, Exception {
+		return this.modeloLogicoParser.generarXml();
 	}
 
 	/**
