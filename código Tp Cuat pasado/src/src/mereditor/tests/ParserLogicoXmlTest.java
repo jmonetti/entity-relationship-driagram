@@ -30,6 +30,11 @@ public class ParserLogicoXmlTest extends TestCase {
 
 	public void testEncontrarEntidadPorId() throws Exception {
 		Entidad entidad = (Entidad) this.parser.resolverLogico("_1");
+		for (Atributo a : entidad.getAtributos()){
+			System.out.println("id " + a.getId());
+			System.out.println("id " + a.getNombre());
+			
+		};
 		assertTrue(entidad != null);
 	}
 /*
@@ -83,15 +88,15 @@ public class ParserLogicoXmlTest extends TestCase {
 	public void testEncontrarAtributoCompuestoPorIdVerificarHijos() throws Exception {
 		Atributo atributo = (Atributo) this.parser.resolver("_32");
 		assertEquals(atributo.getAtributos().size(), 5);
-	}
+	}*/
 
 	public void testEncontrarJerarquiaPorIdVerificarGenerica() throws Exception {
-		Jerarquia jerarquia = (Jerarquia) this.parser.resolver("_50");
+		Jerarquia jerarquia = (Jerarquia) this.parser.resolverLogico("_50");
 		Componente generica = this.parser.resolver("_1");
 		assertEquals(jerarquia.getGenerica(), generica);
 		assertEquals(jerarquia.getDerivadas().size(), 2);
 	}
-
+/*
 	public void testEncontrarRelacionPorIdVerificarNombre() throws Exception {
 		Relacion relacion = (Relacion) this.parser.resolver("_24");
 		assertEquals(relacion.getNombre(), "SL");
@@ -149,20 +154,22 @@ public class ParserLogicoXmlTest extends TestCase {
 		assertEquals(diagrama.getValidacion().getEstado(), EstadoValidacion.SIN_VALIDAR);
 		assertEquals(diagrama.getValidacion().getObservaciones(), "Falta validar");
 	}
-
+*/
 	public void testCargarProyecto() throws Exception {
-		Proyecto proyecto = this.parser.parsear();
+		Proyecto proyecto = this.parser.parsearLogico();
 		assertTrue(proyecto != null);
 		assertTrue(proyecto.getComponentes().size() > 0);
 	}
 	
+
+	
 	public void testCargarProyectoConvertirXml() throws Exception {
-		Proyecto proyecto = this.parser.parsear();
+		Proyecto proyecto = this.parser.parsearLogico();
 		assertTrue(proyecto != null);
 		// Crear parser nuevo con proyecto parseado.
 		this.parser = new ParserXml(proyecto);
-		Document doc =  this.parser.generarXmlComponentes();
+		Document doc =  this.parser.generarXmlComponentesLogicos();
 		assertTrue(doc != null);
-	}*/
+	}
 
 }

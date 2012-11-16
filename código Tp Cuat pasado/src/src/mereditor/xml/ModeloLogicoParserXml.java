@@ -74,10 +74,10 @@ class ModeloLogicoParserXml extends ParserXml {
 		Element diagramaXml = XmlHelper.querySingle(this.root, Constants.DIAGRAMA_QUERY);
 		Diagrama diagrama = (Diagrama) this.resolver(this.obtenerId(diagramaXml));
 		// Obtener la validacion principal
-		Validacion validacion = (Validacion) this.obtenerValidacion(this.root);
+		//Validacion validacion = (Validacion) this.obtenerValidacion(this.root);
 
 		this.proyecto.setDiagramaRaiz(diagrama);
-		this.proyecto.setValidacion(validacion);
+		//this.proyecto.setValidacion(validacion);
 
 		/*
 		 * Recorrer todos los elemento de primer nivel (menos validacion) para

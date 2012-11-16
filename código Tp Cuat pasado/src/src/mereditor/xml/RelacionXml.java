@@ -73,14 +73,51 @@ public class RelacionXml extends RelacionControl implements Xmlizable {
 
 	@Override
 	public Element toXml(ModeloLogicoParserXml parser) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		Element elemento = parser.crearElemento(Constants.RELACION_TAG);
+		parser.agregarId(elemento, this.id.toString());
+		parser.agregarTipo(elemento, this.tipo.toString());
+		parser.agregarNombre(elemento, nombre);
+
+		Element participantesElem = parser.agregarParticipantes(elemento);
+		for (EntidadRelacion entidadRel : this.participantes) {
+			Element participante = parser.agregarParticipante(participantesElem);
+			parser.agregarReferenciaEntidad(participante, entidadRel.getEntidad().getId());
+			parser.agregarCardinalidad(participante, entidadRel.getCardinalidadMinima(), entidadRel.getCardinalidadMaxima());
+			parser.agregarRol(participante, entidadRel.getRol());
+		}
+		
+		if (this.atributos.size() > 0) {
+			Element atributosElement = parser.agregarElementoAtributos(elemento);
+			for (Atributo atributo : this.atributos)
+				atributosElement.appendChild(parser.convertirXmlizable(atributo).toXml(parser));
+		}
+
+		return elemento;
 	}
 
 	@Override
 	public void fromXml(Element elemento, ModeloLogicoParserXml parser)
 			throws Exception {
-		// TODO Auto-generated method stub
+		this.id = parser.obtenerId(elemento);
+		this.nombre = parser.obtenerNombre(elemento);
+		this.tipo = TipoRelacion.valueOf(parser.obtenerTipo(elemento));
+
+		parser.registrar(this);
+
+		for (Atributo atributo : parser.obtenerAtributos(elemento)) {
+			atributo.setPadre(this);
+			this.atributos.add(atributo);
+		}
+
+		List<Element> participantesXml = parser.obtenerParticipantes(elemento);
+
+		for (Element participanteXml : participantesXml) {
+			Entidad entidad = (Entidad) parser.obtenerEntidadParticipante(participanteXml);
+			String[] cardinalidad = parser.obtenerCardinalidad(participanteXml);
+			String rol = parser.obtenerRol(participanteXml);
+			EntidadRelacion entidadRelacion = new EntidadRelacion(this, entidad, rol, cardinalidad[0], cardinalidad[1]);
+			this.addParticipante(entidadRelacion);
+		}
 		
 	}
 }
