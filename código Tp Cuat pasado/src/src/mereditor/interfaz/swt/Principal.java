@@ -8,6 +8,7 @@ import java.io.Writer;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.Observable;
 
 import javax.xml.transform.OutputKeys;
@@ -30,6 +31,7 @@ import mereditor.interfaz.swt.figuras.DiagramaFigura;
 import mereditor.modelo.Proyecto;
 import mereditor.modelo.ProyectoProxy;
 import mereditor.modelo.Validacion.EstadoValidacion;
+import mereditor.modelo.base.Componente;
 import mereditor.modelo.validacion.Observacion;
 import mereditor.xml.ParserXml;
 
@@ -363,7 +365,7 @@ public class Principal extends Observable implements FigureListener {
 		this.guardarProyecto(false);
 	}
 
-	/**
+	/**TODO ESTO ES LA PAPA AL GUARDAR
 	 * Guarda un proyecto en el path indicado.
 	 * 
 	 * @param showDialog
@@ -384,12 +386,21 @@ public class Principal extends Observable implements FigureListener {
 			this.proyecto.setPath(path);
 			ParserXml modelo;
 			try {
+				
 				modelo = new ParserXml(this.proyecto);
 				this.guardarXml(modelo.generarXmlProyecto(), path);
 				this.guardarXml(modelo.generarXmlComponentes(), dir
 						+ this.proyecto.getComponentesPath());
 				this.guardarXml(modelo.generarXmlRepresentacion(), dir
 						+ this.proyecto.getRepresentacionPath());
+				//Logico
+				modelo = new ParserXml(this.proyecto);
+				
+				
+				this.guardarXml(modelo.generarXmlComponentesLogicos(), dir
+						+ this.proyecto.getComponentesPathLogico());
+				this.guardarXml(modelo.generarXmlRepresentacionLogico(), dir
+						+ this.proyecto.getRepresentacionPathLogico());
 			} catch (Exception e) {
 				this.error("Ocurrió un error al guardar el proyecto.");
 				e.printStackTrace();
@@ -422,11 +433,14 @@ public class Principal extends Observable implements FigureListener {
 	/**
 	 * Agrega un Diagrama al proyecto.
 	 */
-	public void agregarDiagrama() {
+	public void agregarDiagrama(Boolean esLogico) {
 		PromptResult resultado = DialogBuilder.prompt(this.shell,
 				"Ingresar nombre", "Nombre");
 		if (resultado.result == Resultado.OK) {
 			DiagramaControl nuevoDiagrama = new DiagramaControl(this.proyecto);
+			if(esLogico){
+				nuevoDiagrama.setLogico(true);
+			}
 			nuevoDiagrama.setNombre(resultado.value);
 
 			this.proyecto.agregar(nuevoDiagrama);

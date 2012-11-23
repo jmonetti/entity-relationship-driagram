@@ -97,7 +97,7 @@ public class DiagramaXml extends DiagramaControl implements Xmlizable {
 		}
 
 		// Agregar el resultado de la validacion
-		elemento.appendChild(parser.convertirXmlizable(this.validacion).toXml(parser));
+		//elemento.appendChild(parser.convertirXmlizable(this.validacion).toXml(parser));
 
 		return elemento;
 	}

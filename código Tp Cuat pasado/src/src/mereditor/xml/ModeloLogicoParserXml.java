@@ -52,12 +52,15 @@ class ModeloLogicoParserXml extends ParserXml {
 		doc.appendChild(this.root);
 
 		for (Componente componente : proyecto.getComponentes()) {
-			if (componente.es(Entidad.class) || componente.es(Relacion.class) || componente.es(Jerarquia.class)
-					|| componente == proyecto.getDiagramaRaiz())
-				this.root.appendChild(this.convertirXmlizable(componente).toXml(this));
+			
+			if(componente.esLogico()) {
+				if (componente.es(Entidad.class) || componente.es(Relacion.class) || componente.es(Jerarquia.class)
+						|| componente == proyecto.getDiagramaRaiz())
+					this.root.appendChild(this.convertirXmlizable(componente).toXml(this));
+			}
 		}
 
-		this.root.appendChild(this.convertirXmlizable(this.proyecto.getValidacion()).toXml(this));
+		//TODO this.root.appendChild(this.convertirXmlizable(this.proyecto.getValidacion()).toXml(this));
 
 		return doc;
 	}
@@ -70,13 +73,17 @@ class ModeloLogicoParserXml extends ParserXml {
 	 * @throws Exception
 	 */
 	void parsearModelo() throws Exception {
+		
 		//Obtener el id del diagrama principal
 		Element diagramaXml = XmlHelper.querySingle(this.root, Constants.DIAGRAMA_QUERY);
+		
+		if(diagramaXml == null) return;
+		
 		Diagrama diagrama = (Diagrama) this.resolver(this.obtenerId(diagramaXml));
 		// Obtener la validacion principal
 		//Validacion validacion = (Validacion) this.obtenerValidacion(this.root);
 
-		this.proyecto.setDiagramaRaiz(diagrama);
+		//this.proyecto.setDiagramaRaiz(diagrama);
 		//this.proyecto.setValidacion(validacion);
 
 		/*

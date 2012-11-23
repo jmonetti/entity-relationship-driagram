@@ -146,7 +146,8 @@ public class AccionesProvider {
 	public static final SelectionListener nuevoDiagrama = new SelectionAdapter() {
 		@Override
 		public void widgetSelected(SelectionEvent e) {
-			principal().agregarDiagrama();
+			//TODO si se agrega un diagrama logico hay que pasar TRUE por parametro
+			principal().agregarDiagrama(false);
 		}
 	};
 
