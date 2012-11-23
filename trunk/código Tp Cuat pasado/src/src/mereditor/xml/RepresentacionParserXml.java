@@ -123,9 +123,36 @@ class RepresentacionParserXml extends ParserXml {
 		this.root = doc.createElement(Constants.PROYECTO_TAG);
 		doc.appendChild(this.root);
 
-		this.generarDiagramaXml(this.root, this.proyecto.getDiagramaRaiz());
+		if(!this.proyecto.getDiagramaRaiz().esLogico())
+			this.generarDiagramaXml(this.root, this.proyecto.getDiagramaRaiz());
 
 		return doc;
+	}
+	
+	public Document generarXmlLogico() {
+		Document doc = this.docBuilder.newDocument();
+		this.root = doc.createElement(Constants.PROYECTO_TAG);
+		doc.appendChild(this.root);
+
+		if(this.proyecto.getDiagramaRaiz().esLogico())
+			this.generarDiagramaXmlLogico(this.root, this.proyecto.getDiagramaRaiz());
+
+		return doc;
+	}
+	
+	protected void generarDiagramaXmlLogico(Element elemento, Diagrama diagrama) {
+		Element diagramaElem = this.agregarElemento(elemento, Constants.DIAGRAMA_TAG);
+		
+		this.agregarAtributo(diagramaElem, Constants.ID_ATTR, diagrama.getId());
+
+		this.generarDiagramaXml(diagramaElem, diagrama.getId(), diagrama.getComponentes());
+
+		// Recorrer todos los diagramas hijos del principal
+		for (Diagrama diagramaHijo : diagrama.getDiagramas()) {
+			if(diagramaHijo.esLogico()){
+				this.generarDiagramaXml(elemento, diagramaHijo);
+			}
+		}
 	}
 
 	/**
@@ -137,13 +164,16 @@ class RepresentacionParserXml extends ParserXml {
 	 */
 	protected void generarDiagramaXml(Element elemento, Diagrama diagrama) {
 		Element diagramaElem = this.agregarElemento(elemento, Constants.DIAGRAMA_TAG);
+		
 		this.agregarAtributo(diagramaElem, Constants.ID_ATTR, diagrama.getId());
 
 		this.generarDiagramaXml(diagramaElem, diagrama.getId(), diagrama.getComponentes());
 
 		// Recorrer todos los diagramas hijos del principal
 		for (Diagrama diagramaHijo : diagrama.getDiagramas()) {
-			this.generarDiagramaXml(elemento, diagramaHijo);
+			if(!diagramaHijo.esLogico()){
+				this.generarDiagramaXml(elemento, diagramaHijo);
+			}
 		}
 	}
 	

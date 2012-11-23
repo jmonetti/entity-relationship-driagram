@@ -6,6 +6,8 @@ import mereditor.modelo.validacion.ValidarNombreCompleto;
 
 public abstract class ComponenteNombre extends Componente {
 	
+	
+	
 	protected String nombre = "";
 	
 	public ComponenteNombre() {

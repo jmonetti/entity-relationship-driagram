@@ -22,6 +22,10 @@ public class Proyecto extends ComponenteNombre implements ProyectoProxy {
 	 */
 	protected Diagrama raiz;
 	/**
+	 * Diagrama raiz Logico del proyecto.
+	 */
+	protected Diagrama raizLogico;
+	/**
 	 * Diagrama que se encuetra abierto.
 	 */
 	protected Diagrama diagramaActual;
@@ -33,6 +37,7 @@ public class Proyecto extends ComponenteNombre implements ProyectoProxy {
 	 * Path al archivo donde se guardo por ultima vez el proyecto abierto.
 	 */
 	protected String path;
+	
 
 	/**
 	 * Mapa de todos los componentes presentes en el proyecto.
@@ -69,6 +74,15 @@ public class Proyecto extends ComponenteNombre implements ProyectoProxy {
 	public Diagrama getDiagramaRaiz() {
 		return raiz;
 	}
+	
+	/**
+	 * Obtener diagrama raiz del proyecto.
+	 * 
+	 * @return
+	 */
+	public Diagrama getDiagramaRaizLogico() {
+		return raizLogico;
+	}
 
 	/**
 	 * Establece el diagrama raíz del proyecto.
@@ -80,6 +94,20 @@ public class Proyecto extends ComponenteNombre implements ProyectoProxy {
 			throw new RuntimeException("El diagrama raiz ya esta establecido.");
 
 		this.raiz = (DiagramaControl) raiz;
+		if (!this.componentes.containsKey(raiz.getId()))
+			this.agregar(raiz);
+	}
+	
+	/**
+	 * Establece el diagrama raíz del proyecto.
+	 * 
+	 * @return
+	 */
+	public void setDiagramaRaizLogico(Diagrama raiz) {
+		if (this.raizLogico != null)
+			throw new RuntimeException("El diagrama raiz logico ya esta establecido.");
+
+		this.raizLogico = (DiagramaControl) raiz;
 		if (!this.componentes.containsKey(raiz.getId()))
 			this.agregar(raiz);
 	}
@@ -186,6 +214,7 @@ public class Proyecto extends ComponenteNombre implements ProyectoProxy {
 		this.path = path;
 	}
 
+
 	/**
 	 * Devuelve el path donde se guardó el archivo
 	 */
@@ -203,6 +232,12 @@ public class Proyecto extends ComponenteNombre implements ProyectoProxy {
 		String nombre = file.getName().replaceFirst("[.][^.]+$", "");
 		return nombre + "-comp.xml";
 	}
+	
+	public String getComponentesPathLogico() {
+		File file = new File(path);
+		String nombre = file.getName().replaceFirst("[.][^.]+$", "");
+		return nombre + "Logico" + "-comp.xml";
+	}
 
 	/**
 	 * Obtener el path del archivo de representacion.
@@ -213,6 +248,12 @@ public class Proyecto extends ComponenteNombre implements ProyectoProxy {
 		File file = new File(path);
 		String nombre = file.getName().replaceFirst("[.][^.]+$", "");
 		return nombre + "-rep.xml";
+	}
+	
+	public String getRepresentacionPathLogico() {
+		File file = new File(path);
+		String nombre = file.getName().replaceFirst("[.][^.]+$", "");
+		return nombre + "Logico" +  "-rep.xml";
 	}
 
 	/**

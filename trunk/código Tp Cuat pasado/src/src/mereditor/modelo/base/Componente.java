@@ -14,6 +14,31 @@ import mereditor.modelo.validacion.Observacion;
 import mereditor.modelo.validacion.Validable;
 
 public abstract class Componente implements Comparable<Componente>, Validable {
+
+	/**
+	 * atributo que determina si el componente es logico
+	 */
+	protected boolean esLogico = false;
+	
+
+	/**
+	 * 
+	 * @return si el diagrama es Logico
+	 */
+	
+	public boolean esLogico(){
+		return esLogico;
+	}
+	
+	/*
+	 * Setear el valor si es componento logico
+	 * */
+	
+	public void setLogico(boolean esLogico){
+		this.esLogico = esLogico;
+	}
+	
+	
 	/**
 	 * Id del componente
 	 */

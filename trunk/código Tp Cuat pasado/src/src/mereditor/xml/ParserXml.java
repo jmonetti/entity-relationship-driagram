@@ -25,6 +25,7 @@ public class ParserXml {
 	private ModeloParserXml modeloParser;
 	private ModeloLogicoParserXml modeloLogicoParser;
 	private RepresentacionParserXml representacionParser;
+	private RepresentacionParserXml representacionParserLogico;
 
 	public ParserXml() throws Exception {
 		this.docBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
@@ -36,6 +37,7 @@ public class ParserXml {
 		this.modeloParser = new ModeloParserXml(this.proyecto);
 		this.modeloLogicoParser = new ModeloLogicoParserXml(this.proyecto);
 		this.representacionParser = new RepresentacionParserXml(this.proyecto);
+		this.representacionParserLogico = new RepresentacionParserXml(this.proyecto);
 	}
 
 	public ParserXml(String path) throws Exception {
@@ -62,14 +64,15 @@ public class ParserXml {
 		String dir = new File(path).getParent() + File.separator;
 
 		String modeloPath = XmlHelper.querySingle(this.root, "./Modelo").getTextContent();
-		String representacionPath = XmlHelper.querySingle(this.root, "./Representacion")
-				.getTextContent();
+		String modeloPathLogico = XmlHelper.querySingle(this.root, "./ModeloLogico").getTextContent();
+		String representacionPath = XmlHelper.querySingle(this.root, "./Representacion").getTextContent();
+		String representacionPathLogico = XmlHelper.querySingle(this.root, "./RepresentacionLogico").getTextContent();
 
 		this.modeloParser = new ModeloParserXml(this.proyecto, dir + modeloPath);
-		this.modeloLogicoParser = new ModeloLogicoParserXml(this.proyecto, dir + modeloPath);
+		this.modeloLogicoParser = new ModeloLogicoParserXml(this.proyecto, dir + modeloPathLogico);
 		
-		this.representacionParser = new RepresentacionParserXml(this.proyecto, dir
-				+ representacionPath);
+		this.representacionParser = new RepresentacionParserXml(this.proyecto, dir + representacionPath);
+		this.representacionParserLogico = new RepresentacionParserXml(this.proyecto, dir + representacionPathLogico);
 	}
 
 	/**
@@ -98,7 +101,9 @@ public class ParserXml {
 	 */
 	public Proyecto parsear() throws Exception {
 		this.modeloParser.parsearModelo();
+		this.modeloLogicoParser.parsearModelo();
 		this.representacionParser.parsearRepresentacion();
+		this.representacionParserLogico.parsearRepresentacion();
 		return this.proyecto;
 	}
 	
@@ -153,9 +158,21 @@ public class ParserXml {
 
 		this.root.appendChild(modelo);
 		this.root.appendChild(representacion);
+		
+		
+		Element modeloL = this.crearElemento(Constants.MODELO_TAG_LOGICO);
+		Element representacionL = this.crearElemento(Constants.REPRESENTACION_TAG_LOGICO);
+		modeloL.setTextContent(this.proyecto.getComponentesPathLogico());
+		representacionL.setTextContent(this.proyecto.getRepresentacionPathLogico());
+
+		this.root.appendChild(modeloL);
+		this.root.appendChild(representacionL);
+
 
 		return doc;
 	}
+	
+
 
 	/**
 	 * Generar el documento XML de componentes.
@@ -181,6 +198,10 @@ public class ParserXml {
 	 */
 	public Document generarXmlRepresentacion() throws DOMException, Exception {
 		return this.representacionParser.generarXml();
+	}
+	
+	public Document generarXmlRepresentacionLogico() throws DOMException, Exception {
+		return this.representacionParserLogico.generarXmlLogico();
 	}
 
 	/**
