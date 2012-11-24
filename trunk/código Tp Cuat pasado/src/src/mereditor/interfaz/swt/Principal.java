@@ -30,6 +30,7 @@ import mereditor.interfaz.swt.dialogs.AgregarRelacionDialog;
 import mereditor.interfaz.swt.figuras.DiagramaFigura;
 import mereditor.modelo.Proyecto;
 import mereditor.modelo.ProyectoProxy;
+import mereditor.modelo.Transformacion;
 import mereditor.modelo.Validacion.EstadoValidacion;
 import mereditor.modelo.base.Componente;
 import mereditor.modelo.validacion.Observacion;
@@ -373,6 +374,8 @@ public class Principal extends Observable implements FigureListener {
 	 */
 	public void guardarProyecto(boolean showDialog) {
 		String path = this.proyecto.getPath();
+		
+			
 
 		if (path == null || showDialog) {
 			FileDialog fileDialog = new FileDialog(this.shell, SWT.SAVE);
