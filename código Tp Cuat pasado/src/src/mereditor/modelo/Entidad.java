@@ -30,6 +30,15 @@ public class Entidad extends ComponenteNombre implements ComponenteAtributos {
 	public Entidad() {
 		super();
 	}
+	
+	public Entidad(Entidad entidad) {
+		super(entidad.nombre);
+		this.identificadores = entidad.identificadores;
+		this.padres = entidad.padres;
+		this.relaciones = entidad.relaciones;
+		this.tipo = entidad.tipo;
+		
+	}
 
 	public Entidad(String nombre) {
 		super(nombre);
