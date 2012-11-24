@@ -42,6 +42,20 @@ public class Atributo extends ComponenteNombre implements ComponenteAtributos,
 	public Atributo(String nombre) {
 		super(nombre);
 	}
+	
+	public Atributo(Atributo atributo) {
+		super(atributo.getNombre());
+		
+		//agrego todos los atributos
+		for( Atributo att : atributos){
+			this.atributos.add(att);
+		}
+		
+		this.tipo = atributo.tipo;
+		this.cardinalidadMaxima = atributo.cardinalidadMaxima;
+		this.cardinalidadMinima = atributo.cardinalidadMinima;
+		
+	}
 
 	public Atributo(String nombre, String id, Componente padre) {
 		super(nombre, id, padre);
