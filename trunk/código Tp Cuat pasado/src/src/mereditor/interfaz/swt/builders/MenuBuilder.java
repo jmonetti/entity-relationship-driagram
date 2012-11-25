@@ -154,6 +154,8 @@ public class MenuBuilder implements Observer {
 		menuItem.setText("&Obtener Diagrama Lógico");
 		menuItem.addSelectionListener(AccionesProvider.obtenerDiagramaLogico);
 		proyectoItems.add(menuItem);
+                menuItem.addSelectionListener(AccionesProvider.pasajeLogico);
+
 
 		/*
 		 * Ayuda
