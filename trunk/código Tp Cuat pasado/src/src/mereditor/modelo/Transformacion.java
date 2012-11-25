@@ -1,15 +1,16 @@
 package mereditor.modelo;
 
-import java.awt.List;
+ 
 import java.util.Collection;
 import java.util.Set;
 
 import mereditor.modelo.Relacion.EntidadRelacion;
-import mereditor.modelo.Relacion.TipoRelacion;
+ 
 
 public class Transformacion {
 
 	private static Transformacion INSTANCE = null;
+	private static int i = 0;
 	 
     private Transformacion() {}
  
@@ -32,6 +33,9 @@ public class Transformacion {
     	dLogico.setLogico(true);
     	
     	dLogico = transformarAtributos(diagramaDER, dLogico);
+    	
+    	dLogico.setNombre("DiagramaLogico" + i);
+    	i++;
     	    	
     	return dLogico;
     }
