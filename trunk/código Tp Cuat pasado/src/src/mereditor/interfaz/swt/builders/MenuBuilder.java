@@ -155,6 +155,19 @@ public class MenuBuilder implements Observer {
 		menuItem.addSelectionListener(AccionesProvider.obtenerDiagramaLogico);
                 
                 
+                
+                menuItem = new MenuItem(menuBar, SWT.CASCADE);
+		menuItem.setText("Opciones");
+		
+		menu = new Menu(principal.getShell(), SWT.DROP_DOWN);
+		menuItem.setMenu(menu);
+		
+		menuItem = new MenuItem(menu, SWT.PUSH);
+		menuItem.setText("&Pasar Diagrama a modelo de tablas...");
+                menuItem.addSelectionListener(AccionesProvider.pasajeLogico);
+
+                
+                
                 menuItem = new MenuItem(menu, SWT.PUSH);
 		menuItem.setText("&Pasar Diagrama a modelo de tablas...");
                 menuItem.addSelectionListener(AccionesProvider.pasajeLogico);
