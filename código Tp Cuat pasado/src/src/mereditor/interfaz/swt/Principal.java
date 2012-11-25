@@ -28,6 +28,7 @@ import mereditor.interfaz.swt.dialogs.AgregarEntidadDialog;
 import mereditor.interfaz.swt.dialogs.AgregarJerarquiaDialog;
 import mereditor.interfaz.swt.dialogs.AgregarRelacionDialog;
 import mereditor.interfaz.swt.figuras.DiagramaFigura;
+import mereditor.modelo.Diagrama;
 import mereditor.modelo.Proyecto;
 import mereditor.modelo.ProyectoProxy;
 import mereditor.modelo.Transformacion;
@@ -780,5 +781,16 @@ public class Principal extends Observable implements FigureListener {
 	public void mostrarArbol(boolean mostrar) {
 		int peso = mostrar ? 3 : 0;
 		this.sashForm.setWeights(new int[] { peso, 16 });
+	}
+
+	public void dibujarDiagramaLogico() {
+		String idActual = this.proyecto.getDiagramaActual().getId();
+		Diagrama actual = this.proyecto.getDiagramaActual();
+		this.proyecto.setNombre("mod!");
+				this.actualizarVista();
+				this.actualizarEstado();
+			
+		
+		
 	}
 }

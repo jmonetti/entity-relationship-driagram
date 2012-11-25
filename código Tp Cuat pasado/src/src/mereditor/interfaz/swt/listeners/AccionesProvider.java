@@ -84,6 +84,12 @@ public class AccionesProvider {
 		};
 	};
 
+	public static final SelectionListener obtenerDiagramaLogico = new SelectionAdapter(){
+		public void widgetSelected(SelectionEvent e) {
+			principal().dibujarDiagramaLogico();
+		}
+	};
+
 	/**
 	 * Agregar una entidad al diagrama actual.
 	 */
