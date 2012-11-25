@@ -145,13 +145,15 @@ public class MenuBuilder implements Observer {
 		/*Agregado para empezar a poner los nuevos comandos*/
 	
 		menuItem = new MenuItem(menuBar, SWT.CASCADE);
-		menuItem.setText("Opciones");
+		menuItem.setText("Diagrama Lógico");
 		
 		menu = new Menu(principal.getShell(), SWT.DROP_DOWN);
 		menuItem.setMenu(menu);
 		
 		menuItem = new MenuItem(menu, SWT.PUSH);
-		menuItem.setText("&Pasar Diagrama a modelo de tablas...");
+		menuItem.setText("&Obtener Diagrama Lógico");
+		menuItem.addSelectionListener(AccionesProvider.obtenerDiagramaLogico);
+		proyectoItems.add(menuItem);
 
 		/*
 		 * Ayuda
