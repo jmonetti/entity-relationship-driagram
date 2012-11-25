@@ -5,7 +5,7 @@ La entrega contiene las siguientes carpetas:
 docs:
 -----
 
-Aquí se encontrarán los documentos de análisis, técnico y el manual del usuario, cada uno de ellos en formato PDF para que puedan ser visualizados en cualquier plataforma.
+Aquí se    encontrarán los documentos de análisis, técnico y el manual del usuario, cada uno de ellos en formato PDF para que puedan ser visualizados en cualquier plataforma.
 
 src:
 ----
