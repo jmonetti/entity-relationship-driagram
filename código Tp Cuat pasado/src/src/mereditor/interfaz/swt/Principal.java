@@ -280,6 +280,32 @@ public class Principal extends Observable implements FigureListener {
 			}
 		}
 	}
+        
+        
+        	/**
+	 * Pasaje del modelo actual a logico
+	 */
+	public void pasajeLogicoDiagrama() {
+		/*int resultado = this.preguntarGuardar();
+
+		if (resultado != SWT.CANCEL) {
+			FileDialog fileDialog = new FileDialog(this.shell);
+			fileDialog.setFilterExtensions(extensionProyecto);
+			String path = fileDialog.open();
+
+			if (path != null) {
+				try {
+					ParserXml modelo = new ParserXml(path);
+					this.proyecto = modelo.parsear();
+					this.cargarProyecto();
+				} catch (Exception e) {
+					e.printStackTrace();
+					error(e.getMessage());
+				}
+			}
+		}*/
+            System.out.println("Se pasa al logico");
+	}
 
 	/**
 	 * Abre un proyecto.
