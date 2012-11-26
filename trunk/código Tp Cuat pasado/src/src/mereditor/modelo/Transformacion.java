@@ -33,6 +33,7 @@ public class Transformacion {
     	dLogico.setLogico(true);
     	
     	dLogico = transformarAtributos(diagramaDER, dLogico);
+    	dLogico = eliminarEntidadesGenerales(dLogico);
     	
     	dLogico.setNombre("DiagramaLogico" + i);
     	i++;
@@ -137,5 +138,54 @@ public class Transformacion {
 		
 		
 		return dLogico;
+	}
+	
+	
+	/**
+	 *  Para la conversion jerarquica se Eliminan la entidades generales
+	 *  y heredandan a las especializadas sus atributos y relaciones
+	 * @param dLogico Diagrama Logico al que se le realiza la transformacion de jerarquia
+	 * @return Diagrama logico transformado
+	 */
+	private Diagrama eliminarEntidadesGenerales(Diagrama dLogico) {
+		
+		
+		//obtengo todas las jerarquias del diagrama 
+		//@param false: dado que un componente diagrama no tiene padre 
+		Set<Jerarquia> jerarquiasDiagrama = dLogico.getJerarquias(false);
+		
+		//Para cada jerarquia voy a pasar los atributos a las entidades hijas
+		for( Jerarquia jerarquia : jerarquiasDiagrama){
+			Entidad generica = jerarquia.getGenerica();
+			
+			//recorro todas las entidades derivadas para agregarle los atributos del padre
+			for(Entidad derivada: jerarquia.getDerivadas()){
+				
+				//recorro toodos los atributos del padre y se los agrego al hijo
+				for(Atributo atributo : generica.getAtributos()){
+					derivada.addAtributo(atributo);
+				}
+				
+				//recorro todas las relaciones del padre y se las agrego al hijo
+				for(Relacion relacion : generica.getRelaciones()){
+					
+					relacion.modificarParticipante(generica.getId(),derivada);
+					derivada.addRelacion(relacion);
+				}
+				
+				//Elimino padre del hijo
+				derivada.removePadre(derivada.getId());
+			}
+			//Elimino al componente padre del diagrama
+			dLogico.eliminar(generica);
+		}
+		
+		//Elimino todas las jerarquias del diagrama 
+		for( Jerarquia jerarquia : jerarquiasDiagrama){
+			dLogico.eliminar(jerarquia);
+		}
+	
+		
+		return dLogico;		
 	}
 }

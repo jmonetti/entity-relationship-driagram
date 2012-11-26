@@ -65,6 +65,16 @@ public class Relacion extends ComponenteNombre implements ComponenteAtributos, C
 	public TipoRelacion getTipo() {
 		return tipo;
 	}
+	
+	public void modificarParticipante(String idOld, Entidad entidadNew){
+		for(EntidadRelacion er : participantes){
+			
+			//Modifico la entidad del participante
+			if(er.entidad.equals(idOld)){
+				er.entidad = entidadNew;
+			}
+		}
+	}
 
 	public void setTipo(TipoRelacion tipo) {
 		this.tipo = tipo;
