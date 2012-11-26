@@ -419,8 +419,8 @@ public class Principal extends Observable implements FigureListener {
 			try {
 				
 				//for (Diagrama dia : ){
-					Diagrama d = Transformacion.getInstance().tranformarALogico(this.proyecto.getDiagramaActual(), proyecto);
-					proyecto.agregar(d);
+					//Diagrama d = Transformacion.getInstance().tranformarALogico(this.proyecto.getDiagramaActual(), proyecto);
+					//proyecto.agregar(d);
 				//}
 				
 				modelo = new ParserXml(this.proyecto);
