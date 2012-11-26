@@ -28,7 +28,7 @@ public class Transformacion {
     	return INSTANCE;
     }
     
-    public Diagrama tranformarALogico(Diagrama diagramaDER, Proyecto proyecto){
+    public DiagramaControl tranformarALogico(Diagrama diagramaDER, Proyecto proyecto){
     	
     	DiagramaControl dLogico = new DiagramaControl(proyecto);
     	dLogico.setLogico(true);
@@ -148,7 +148,7 @@ public class Transformacion {
 	 * @param dLogico Diagrama Logico al que se le realiza la transformacion de jerarquia
 	 * @return Diagrama logico transformado
 	 */
-	private Diagrama eliminarEntidadesGenerales(Diagrama dLogico) {
+	private DiagramaControl eliminarEntidadesGenerales(DiagramaControl dLogico) {
 		
 		
 		//obtengo todas las jerarquias del diagrama 
