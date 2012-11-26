@@ -4,6 +4,7 @@ package mereditor.modelo;
 import java.util.Collection;
 import java.util.Set;
 
+import mereditor.control.DiagramaControl;
 import mereditor.modelo.Relacion.EntidadRelacion;
  
 
@@ -29,7 +30,7 @@ public class Transformacion {
     
     public Diagrama tranformarALogico(Diagrama diagramaDER, Proyecto proyecto){
     	
-    	Diagrama dLogico = new Diagrama(proyecto);
+    	DiagramaControl dLogico = new DiagramaControl(proyecto);
     	dLogico.setLogico(true);
     	
     	dLogico = transformarAtributos(diagramaDER, dLogico);
@@ -41,7 +42,7 @@ public class Transformacion {
     	return dLogico;
     }
 
-	private Diagrama transformarAtributos(Diagrama diagramaDER, Diagrama dLogico) {
+	private DiagramaControl transformarAtributos(Diagrama diagramaDER, DiagramaControl dLogico) {
 		
 		//obtengo todas las entidades y chequeo si tiene atributos Compuestos
 		Entidad entidadNew;

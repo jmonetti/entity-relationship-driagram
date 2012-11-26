@@ -402,6 +402,7 @@ public class Principal extends Observable implements FigureListener {
 	public void guardarProyecto(boolean showDialog) {
 		String path = this.proyecto.getPath();
 		
+
 			
 
 		if (path == null || showDialog) {
@@ -416,6 +417,11 @@ public class Principal extends Observable implements FigureListener {
 			this.proyecto.setPath(path);
 			ParserXml modelo;
 			try {
+				
+				//for (Diagrama dia : ){
+					Diagrama d = Transformacion.getInstance().tranformarALogico(this.proyecto.getDiagramaActual(), proyecto);
+					proyecto.agregar(d);
+				//}
 				
 				modelo = new ParserXml(this.proyecto);
 				this.guardarXml(modelo.generarXmlProyecto(), path);
