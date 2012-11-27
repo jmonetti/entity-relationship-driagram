@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
@@ -204,6 +205,28 @@ public class Proyecto extends ComponenteNombre implements ProyectoProxy {
 	public boolean contiene(String id) {
 		return this.componentes.containsKey(id);
 	}
+        
+        
+        /*indica si en el proyecto hay un diagrama con ese nombre y en caso que sea cierto devuelve ese diagrama*/
+        public Diagrama  contiene_diagrama(String nombre) {
+            
+            Iterator it = this.componentes.entrySet().iterator();
+            Diagrama dia=null;
+            
+	        while(it.hasNext()&&dia==null) {
+ Map.Entry ent = (Map.Entry)it.next();
+	            ComponenteNombre p = (ComponenteNombre)ent.getValue();
+                    if ( p instanceof Diagrama && p.getNombre().equals(nombre)) 
+                       dia=(Diagrama) p;
+                    
+	         
+	        }
+                    
+		/*return this.componentes.containsKey(id);
+                this.componentes.*/
+        return dia;
+                
+	}
 
 	/**
 	 * Establecer el path donde se debe guardar el proyecto.
@@ -220,6 +243,7 @@ public class Proyecto extends ComponenteNombre implements ProyectoProxy {
 	 */
 	public String getPath() {
 		return this.path;
+              
 	}
 
 	/**
