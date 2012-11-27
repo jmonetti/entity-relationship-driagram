@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import mereditor.modelo.Relacion.EntidadRelacion;
 import mereditor.modelo.base.Componente;
 import mereditor.modelo.base.ComponenteNombre;
 import mereditor.modelo.base.ComponenteAtributos;
@@ -35,8 +36,36 @@ public class Entidad extends ComponenteNombre implements ComponenteAtributos {
 		super(entidad.nombre);
 		this.identificadores = entidad.identificadores;
 		this.padres = entidad.padres;
-		this.relaciones = entidad.relaciones;
 		this.tipo = entidad.tipo;
+		
+		this.relaciones = new HashSet<Relacion>();;
+		
+		//recorro todas las relaciones y se las agrego a la nueva entidad
+		for(Relacion relacion : entidad.getRelaciones()){
+			
+			Relacion nuevaRelacion = new Relacion(relacion.getNombre());
+			
+			nuevaRelacion.setTipo(relacion.getTipo());
+			
+			for (Atributo atributo : relacion.getAtributos()){
+				nuevaRelacion.addAtributo(new Atributo(atributo));
+			}
+			
+			for (EntidadRelacion er : relacion.getParticipantes()){
+				
+				Relacion.EntidadRelacion aux = nuevaRelacion.new EntidadRelacion(nuevaRelacion);	
+				aux.setRol(er.getRol());
+				aux.setCardinalidadMinima(er.getCardinalidadMinima());
+				aux.setCardinalidadMaxima(er.getCardinalidadMaxima());
+				
+				if(er.getEntidad().getId().equals(entidad.getId())){
+					aux.setEntidad(er.getEntidad());
+				} else aux.setEntidad(this);
+				
+				
+			}
+			this.relaciones.add(nuevaRelacion);
+		}
 		
 	}
 
