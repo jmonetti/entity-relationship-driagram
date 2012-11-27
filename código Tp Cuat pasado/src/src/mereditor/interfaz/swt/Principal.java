@@ -187,7 +187,7 @@ public class Principal extends Observable implements FigureListener {
 	/**
 	 * Proyecto que se encuentra abierto.
 	 */
-	private Proyecto proyecto;
+	public Proyecto proyecto;
 
 	/**
 	 * Handler del evento cuando se cierra la aplicación. Si hay modificaciones
@@ -216,6 +216,7 @@ public class Principal extends Observable implements FigureListener {
 
 		// Construir y agregar los controles.
 		MenuBuilder.build(this);
+                
 		this.toolBar = ToolBarBuilder.build(this);
 		this.sashForm = new SashForm(this.shell, SWT.HORIZONTAL);
 		TreeManager.build(this.sashForm);
@@ -286,24 +287,36 @@ public class Principal extends Observable implements FigureListener {
 	 * Pasaje del modelo actual a logico
 	 */
 	public void pasajeLogicoDiagrama() {
-		/*int resultado = this.preguntarGuardar();
+            
+            /*Me fijo si ya existia una transformacion de ese diagrama en el proyecto*/
+        //    this.proyecto.getDiagramas().
+            
+            /*Lo primero que hago es obtener el diagrama logico a partir del metodo trasnformacion*/
+            DiagramaControl diagramaLogico =   Transformacion.getInstance().tranformarALogico(this.proyecto.getDiagramaActual(), proyecto);
+            
+            /*Busco si ya habia un logico generado en el proyecto para ese diagrama fisico, hablando con juan pensamos 
+             * en q si uno forma un diagrama logico a partir de un fisico una vez la segunda vez que lo haga deberia eliminar el anterior y
+             * agregar el nuevo al proyecto, esto se haria buscando por el nombre del diagrama en el proyecto por ende no puede haber mas de un nombre por cada diagrama
+             * en el proyecto es una limitacion pero safa me parece...
+             *              
+             * */
+      
+       
+            Diagrama dia=this.proyecto.contiene_diagrama(diagramaLogico.getNombre());
+            if(dia!=null){
+            System.out.println("Se elimina");
+            proyecto.eliminar(dia);
+            }
+            /*Ahora inserto la nueva transformacion al proyecto*/
+            this.proyecto.agregar(diagramaLogico);
+            this.proyecto.setDiagramaActual(diagramaLogico.getId());
+            // Notificar a la toolbar que hay un proyecto abierto.
+		this.setChanged();
+		this.notifyObservers();
+         
 
-		if (resultado != SWT.CANCEL) {
-			FileDialog fileDialog = new FileDialog(this.shell);
-			fileDialog.setFilterExtensions(extensionProyecto);
-			String path = fileDialog.open();
-
-			if (path != null) {
-				try {
-					ParserXml modelo = new ParserXml(path);
-					this.proyecto = modelo.parsear();
-					this.cargarProyecto();
-				} catch (Exception e) {
-					e.printStackTrace();
-					error(e.getMessage());
-				}
-			}
-		}*/
+				this.actualizarVista();
+    
             System.out.println("Se pasa al logico");
 	}
 

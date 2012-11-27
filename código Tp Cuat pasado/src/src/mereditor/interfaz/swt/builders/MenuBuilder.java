@@ -166,6 +166,7 @@ public class MenuBuilder implements Observer {
 		menuItem = new MenuItem(menu, SWT.PUSH);
 		menuItem.setText("&Pasar Diagrama a modelo de tablas...");
                 menuItem.addSelectionListener(AccionesProvider.pasajeLogico);
+               
                 proyectoItems.add(menuItem);
 
                 
@@ -197,10 +198,23 @@ public class MenuBuilder implements Observer {
 	private void habilitarItems(boolean habilitar) {
 		for (MenuItem item : this.proyectoItems)
 			item.setEnabled(habilitar);
+     
 	}
+        
+        private void habilitarItemPasajeLogico(boolean habilitar) {
+		for (MenuItem item : this.proyectoItems){
+                    if(item.getText().equals("&Pasar Diagrama a modelo de tablas..."))
+			item.setEnabled(habilitar);
+        }
+     
+	}
+        
+       
 
 	@Override
 	public void update(Observable o, Object arg) {
-		this.habilitarItems(this.principal.getProyecto() != null);		
+		this.habilitarItems(this.principal.getProyecto() != null);
+                this.habilitarItemPasajeLogico(!this.principal.proyecto.getDiagramaActual().esLogico());
+              
 	}
 }
