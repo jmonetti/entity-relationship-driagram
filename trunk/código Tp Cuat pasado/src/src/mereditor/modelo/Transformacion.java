@@ -41,7 +41,7 @@ public class Transformacion {
 	    	dLogico.setLogico(true);
 	    	
 	    	dLogico = transformarAtributos(diagramaDER, dLogico,proyecto);
-	    	dLogico = eliminarEntidadesGenerales(dLogico);
+	    	dLogico = eliminarEntidadesGenerales(dLogico, proyecto);
 	    	
 	    	dLogico.setNombre("DiagramaLogico-" + diagramaDER.getNombre());
 	    	i++;
@@ -101,10 +101,11 @@ public class Transformacion {
 					
 					entidadComp.addRelacion(relacionCopia);
 					entidadNew.addRelacion(relacionCopia);
-					
+					proyecto.agregarSoloAlProyecto(relacionCopia);
+					dLogico.agregar(relacionCopia);
 					//Agrego la nueva entidad creada a partir del tributo compuesto al diagrama
 					dLogico.agregar(entidadComp);
-					proyecto.agregar(entidadComp);
+					proyecto.agregarSoloAlProyecto(entidadComp);
 					
 				} else if ( !atributo.getCardinalidadMinima().equals("1") || !atributo.getCardinalidadMaxima().equals("1")){
 					///Es polivalente -> transformo a una entidad
@@ -135,7 +136,7 @@ public class Transformacion {
 					
 					//Agrego la nueva entidad creada a partir del tributo compuesto al diagrama
 					dLogico.agregar(entidadComp);
-					proyecto.agregar(entidadComp);
+					proyecto.agregarSoloAlProyecto(entidadComp);
 					
 				} else {
 					// no es ni compuesto ni polivalente. Todo Piola.
@@ -161,7 +162,7 @@ public class Transformacion {
 	 * @param dLogico Diagrama Logico al que se le realiza la transformacion de jerarquia
 	 * @return Diagrama logico transformado
 	 */
-	private DiagramaControl eliminarEntidadesGenerales(DiagramaControl dLogico) {
+	private DiagramaControl eliminarEntidadesGenerales(DiagramaControl dLogico, Proyecto proyecto) {
 		
 		
 		//obtengo todas las jerarquias del diagrama 
@@ -185,6 +186,8 @@ public class Transformacion {
 					
 					relacion.modificarParticipante(generica.getId(),derivada);
 					derivada.addRelacion(relacion);
+					proyecto.agregar(relacion);
+					
 				}
 				
 				//Elimino padre del hijo

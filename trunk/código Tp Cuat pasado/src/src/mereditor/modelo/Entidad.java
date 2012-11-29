@@ -44,7 +44,7 @@ public class Entidad extends ComponenteNombre implements ComponenteAtributos {
 		for(Relacion relacion : entidad.getRelaciones()){
 			
 			Relacion nuevaRelacion = new Relacion(relacion.getNombre());
-			
+			nuevaRelacion.setLogico(true);
 			nuevaRelacion.setTipo(relacion.getTipo());
 			
 			for (Atributo atributo : relacion.getAtributos()){
