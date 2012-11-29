@@ -55,7 +55,7 @@ class ModeloLogicoParserXml extends ParserXml {
 			
 			if(componente.esLogico()) {
 				if (componente.es(Entidad.class) || componente.es(Relacion.class) || componente.es(Jerarquia.class)
-						|| componente == proyecto.getDiagramaRaiz())
+						|| componente == proyecto.getDiagramaRaiz() || (componente.es(Diagrama.class) && componente.esLogico() == true))
 					this.root.appendChild(this.convertirXmlizable(componente).toXml(this));
 			}
 		}

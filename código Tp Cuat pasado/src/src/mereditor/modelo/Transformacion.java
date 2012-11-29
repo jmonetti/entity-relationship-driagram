@@ -4,7 +4,10 @@ package mereditor.modelo;
 import java.util.Collection;
 import java.util.Set;
 
+import mereditor.control.AtributoControl;
 import mereditor.control.DiagramaControl;
+import mereditor.control.EntidadControl;
+import mereditor.control.RelacionControl;
 import mereditor.modelo.Relacion.EntidadRelacion;
  
 
@@ -33,7 +36,7 @@ public class Transformacion {
     	DiagramaControl dLogico = new DiagramaControl(proyecto);
     	dLogico.setLogico(true);
     	
-    	dLogico = transformarAtributos(diagramaDER, dLogico);
+    	dLogico = transformarAtributos(diagramaDER, dLogico,proyecto);
     	dLogico = eliminarEntidadesGenerales(dLogico);
     	
     	dLogico.setNombre("DiagramaLogico" + i);
@@ -42,16 +45,16 @@ public class Transformacion {
     	return dLogico;
     }
 
-	private DiagramaControl transformarAtributos(Diagrama diagramaDER, DiagramaControl dLogico) {
+	private DiagramaControl transformarAtributos(Diagrama diagramaDER, DiagramaControl dLogico,Proyecto proyecto) {
 		
 		//obtengo todas las entidades y chequeo si tiene atributos Compuestos
-		Entidad entidadNew;
+		EntidadControl entidadNew;
 				
 		Set<Entidad> entidades = diagramaDER.getEntidades(false);
 		// Recorro todas las entidades para encontrar sus atributos polivalentes
 		for( Entidad entidad : entidades){
 			
-			entidadNew = new Entidad(entidad);
+			entidadNew = new EntidadControl(entidad);
 			entidadNew.setLogico(true);
 			
 			for ( Atributo atributo : entidad.getAtributos()){
@@ -62,16 +65,17 @@ public class Transformacion {
 					//Es Compuesto -> Cada atributo compuesto de un componente pasa a ser un un 
 					//                atributo simple de la nueva entidad que contiene al compuesto 
 					
-					Entidad entidadComp = new Entidad(atributo.getNombre());
+					EntidadControl entidadComp = new EntidadControl(atributo.getNombre());
 					entidadComp.setLogico(true);
 					
 					for ( Atributo at : atributosComp){
-						Atributo atributoCopia = new Atributo(at);
+						AtributoControl atributoCopia = new AtributoControl(at);
 						atributoCopia.setLogico(true);
-						entidadComp.addAtributo(atributoCopia);
+						entidadComp.addAtributo(atributoCopia);	
+						proyecto.agregar(atributoCopia);
 					}
 					
-					Relacion relacionCopia = new Relacion("RelacionCompuesta"+ atributo.getNombre());
+					RelacionControl relacionCopia = new RelacionControl("RelacionCompuesta"+ atributo.getNombre());
 					relacionCopia.setLogico(true);
 					
 					EntidadRelacion er1 = relacionCopia.new EntidadRelacion(relacionCopia);
@@ -94,14 +98,15 @@ public class Transformacion {
 					
 					//Agrego la nueva entidad creada a partir del tributo compuesto al diagrama
 					dLogico.agregar(entidadComp);
+					proyecto.agregar(entidadComp);
 					
 				} else if ( !atributo.getCardinalidadMinima().equals("1") || !atributo.getCardinalidadMaxima().equals("1")){
 					///Es polivalente -> transformo a una entidad
 					
-					Entidad entidadComp = new Entidad(atributo.getNombre());
+					EntidadControl entidadComp = new EntidadControl(atributo.getNombre());
 					entidadComp.setLogico(true);
 					
-					Relacion relacionCopia = new Relacion("RelacionPolivalente"+ atributo.getNombre());
+					RelacionControl relacionCopia = new RelacionControl("RelacionPolivalente"+ atributo.getNombre());
 					relacionCopia.setLogico(true);
 					
 					EntidadRelacion er1 = relacionCopia.new EntidadRelacion(relacionCopia);
@@ -124,17 +129,19 @@ public class Transformacion {
 					
 					//Agrego la nueva entidad creada a partir del tributo compuesto al diagrama
 					dLogico.agregar(entidadComp);
+					proyecto.agregar(entidadComp);
 					
 				} else {
 					// no es ni compuesto ni polivalente. Todo Piola.
-					 Atributo aux = new Atributo(atributo);
+					 AtributoControl aux = new AtributoControl(atributo);
 					 aux.setLogico(true);
 					 
 					entidadNew.addAtributo(aux);
 				}
 			}
 			
-			dLogico.agregar(entidadNew);			
+			dLogico.agregar(entidadNew);
+			proyecto.agregar(entidadNew);
 		}
 		
 		

@@ -18,6 +18,14 @@ import org.eclipse.draw2d.MouseListener;
 public class AtributoControl extends Atributo implements Control<Atributo>, MouseListener {
 	protected Map<String, AtributoFigure> figures = new HashMap<>();
 
+	public AtributoControl(Atributo at) {
+		super(at);
+	}
+
+	public AtributoControl() {
+		super();
+	}
+
 	@Override
 	public Figura<Atributo> getFigura(String idDiagrama) {
 		if (!this.figures.containsKey(idDiagrama)) {
