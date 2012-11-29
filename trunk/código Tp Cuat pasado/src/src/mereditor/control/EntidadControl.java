@@ -15,6 +15,19 @@ import org.eclipse.draw2d.MouseListener;
 
 public class EntidadControl extends Entidad implements Control<Entidad>, MouseListener {
 	protected Map<String, EntidadFigure> figures = new HashMap<>();
+	
+	public EntidadControl(Entidad ec ){
+		super(ec);
+	}
+	
+	public EntidadControl(String nombre) {
+		super(nombre);
+	}
+
+
+	public EntidadControl() {
+		super();
+	}
 
 	@Override
 	public Figura<Entidad> getFigura(String idDiagrama) {

@@ -18,6 +18,14 @@ import org.eclipse.draw2d.MouseListener;
 public class RelacionControl extends Relacion implements Control<Relacion>, MouseListener {
 	protected Map<String, RelacionFigure> figures = new HashMap<>();
 
+	public RelacionControl(String string) {
+		super(string);
+	}
+
+	public RelacionControl() {
+		super();
+	}
+
 	@Override
 	public Figura<Relacion> getFigura(String idDiagrama) {
 		if (!this.figures.containsKey(idDiagrama)) {
