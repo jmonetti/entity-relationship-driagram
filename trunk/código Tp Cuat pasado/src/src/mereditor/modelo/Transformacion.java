@@ -31,18 +31,24 @@ public class Transformacion {
     	return INSTANCE;
     }
     
+    /**
+     * @return diagrama convertido a logico, si el diagrama pasado por parametro es logico retorno null
+     */
     public DiagramaControl tranformarALogico(Diagrama diagramaDER, Proyecto proyecto){
     	
-    	DiagramaControl dLogico = new DiagramaControl(proyecto);
-    	dLogico.setLogico(true);
-    	
-    	dLogico = transformarAtributos(diagramaDER, dLogico,proyecto);
-    	dLogico = eliminarEntidadesGenerales(dLogico);
-    	
-    	dLogico.setNombre("DiagramaLogico" + i);
-    	i++;
-    	    	
-    	return dLogico;
+    	if(!diagramaDER.esLogico()){//TODO agregar despues de las pruebas-> && diagramaDER.validar() == null){
+	    	DiagramaControl dLogico = new DiagramaControl(proyecto);
+	    	dLogico.setLogico(true);
+	    	
+	    	dLogico = transformarAtributos(diagramaDER, dLogico,proyecto);
+	    	dLogico = eliminarEntidadesGenerales(dLogico);
+	    	
+	    	dLogico.setNombre("DiagramaLogico-" + diagramaDER.getNombre());
+	    	i++;
+	    	    	
+	    	return dLogico;
+    	}
+    	else return null;
     }
 
 	private DiagramaControl transformarAtributos(Diagrama diagramaDER, DiagramaControl dLogico,Proyecto proyecto) {
@@ -141,7 +147,7 @@ public class Transformacion {
 			}
 			
 			dLogico.agregar(entidadNew);
-			proyecto.agregar(entidadNew);
+			proyecto.agregarSoloAlProyecto(entidadNew);
 		}
 		
 		
