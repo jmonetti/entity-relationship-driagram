@@ -4,62 +4,53 @@ import mereditor.interfaz.swt.listeners.ArrastreControlador;
 import mereditor.modelo.Atributo;
 import mereditor.representacion.PList;
 
-
+import org.eclipse.draw2d.BorderLayout;
+import org.eclipse.draw2d.Ellipse;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.Label;
-
+import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Color;
 
+public class AtributoLogicoFigure extends AtributoFigure {
+	private Color identificadorBackColor = new Color(null, 0, 0, 0);
 
-public abstract class AtributoFigure extends Figura<Atributo> {
-
-	public AtributoFigure(Atributo componente) {
+	public AtributoLogicoFigure(Atributo componente) {
 		super(componente);
-		
 	}
 
 	@Override
 	protected void init() {
-		this.lblName = new Label();
-		this.lblName.setFont(this.getFont());
-		this.lblName.setText(this.getTextoLabel());
-		this.lblName.setBounds(this.lblName.getTextBounds().getTranslated(0, -10));
+		super.init();
+		// Permitir que el label se mueva
+		new ArrastreControlador(this.lblName);
 
 	}
 
-	@Override
-	public void setParent(IFigure parent) {
-		super.setParent(parent);
 
-		if (this.getParent() != null && !this.componente.esCompuesto())
-			this.getParent().add(this.lblName, 0);
-	}
-	
 
 	/**
-	 * Devuelve el texto que se debe mostrar en el diagrama.
+	 * Conecta este atributo con uno de sus atributos hijos
 	 * 
-	 * @return
+	 * @param figura
 	 */
-	protected String getTextoLabel() {
-		String texto = this.componente.getNombre();
-		return texto;
-	}
+
 
 	@Override
 	public void setRepresentacion(PList repr) {
-		super.setRepresentacion(repr);
+		/*super.setRepresentacion(repr);
 
 		if (this.lblName != null && repr.get("Label") != null) {
 			PList labelRepr = repr.<PList> get("Label");
 			this.lblName.setLocation(new Point(labelRepr.<Integer> get("x"),
 					labelRepr.<Integer> get("y")));
-		}
+		}*/
 	}
 
 	@Override
 	public PList getRepresentacion() {
-		PList repr = super.getRepresentacion();
+		/*PList repr = super.getRepresentacion();
 		if (this.lblName != null) {
 			PList labelRepr = new PList();
 			repr.set("Label", labelRepr);
@@ -67,11 +58,20 @@ public abstract class AtributoFigure extends Figura<Atributo> {
 			labelRepr.set("y", this.lblName.getLocation().y);
 		}
 
-		return repr;
+		return repr;*/
+		return null;
 	}
 
 	@Override
-	public abstract void actualizar();
+	public void actualizar() {
+		this.lblName.setText(this.getTextoLabel());
+		this.lblName.setBounds(this.lblName.getTextBounds());
+		
+	}
 
-	public abstract void conectarAtributo(Figura<Atributo> figura);
+	@Override
+	public void conectarAtributo(Figura<Atributo> figura) {
+		// TODO Auto-generated method stub
+		
+	}
 }

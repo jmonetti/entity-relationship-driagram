@@ -5,8 +5,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import mereditor.interfaz.swt.Principal;
 import mereditor.interfaz.swt.editores.EditorFactory;
+import mereditor.interfaz.swt.figuras.AtributoDERFigure;
 import mereditor.interfaz.swt.figuras.AtributoFigure;
+import mereditor.interfaz.swt.figuras.AtributoLogicoFigure;
 import mereditor.interfaz.swt.figuras.Figura;
 import mereditor.modelo.Atributo;
 import mereditor.modelo.base.ComponenteAtributos;
@@ -29,7 +32,15 @@ public class AtributoControl extends Atributo implements Control<Atributo>, Mous
 	@Override
 	public Figura<Atributo> getFigura(String idDiagrama) {
 		if (!this.figures.containsKey(idDiagrama)) {
-			AtributoFigure figura = new AtributoFigure(this);
+			AtributoFigure figura;
+			
+			if (Principal.getInstance().isVistaLogica()){
+				figura = new AtributoLogicoFigure(this);
+			}
+			else {
+				figura = new AtributoDERFigure(this);
+			}
+			
 			this.figures.put(idDiagrama, figura);
 			
 			this.setPosicionInicial(figura, idDiagrama);
@@ -49,6 +60,7 @@ public class AtributoControl extends Atributo implements Control<Atributo>, Mous
 		// Posicionar el atributo relativo a la posición del padre según su
 		// posición en la colección de atributos.
 		Control<?> padre = (Control<?>) this.getPadre();
+		
 		Figure figPadre = padre.getFigura(idDiagrama);
 		ComponenteAtributos compAtribs = (ComponenteAtributos) padre;
 		List<Atributo> attrs = new ArrayList<>(compAtribs.getAtributos());
@@ -66,10 +78,13 @@ public class AtributoControl extends Atributo implements Control<Atributo>, Mous
 		for (Atributo atributo : this.atributos) {
 			AtributoControl atributoControl = (AtributoControl) atributo;
 			figura.conectarAtributo(atributoControl.getFigura(idDiagrama));
+			
+			if (!Principal.getInstance().isVistaLogica()){
 			atributoControl.dibujar(contenedor, idDiagrama);
 
 			figura.addFiguraLoqueada(atributoControl.getFigura(idDiagrama));
-		}
+			}
+		}	
 	}
 
 	public Map<String, AtributoFigure> getFiguras() {

@@ -7,6 +7,7 @@ import java.util.Observer;
 
 import mereditor.interfaz.swt.Principal;
 import mereditor.interfaz.swt.listeners.AccionesProvider;
+import mereditor.modelo.Proyecto;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Menu;
@@ -37,7 +38,7 @@ public class MenuBuilder implements Observer {
 
 		Menu menu = new Menu(principal.getShell(), SWT.DROP_DOWN);
 		menuItem.setMenu(menu);
-		
+
 		menuItem = new MenuItem(menu, SWT.PUSH);
 		menuItem.setText("&Nuevo");
 		menuItem.addSelectionListener(AccionesProvider.nuevo);
@@ -50,63 +51,63 @@ public class MenuBuilder implements Observer {
 		menuItem.setText("&Guardar");
 		menuItem.addSelectionListener(AccionesProvider.guardar);
 		proyectoItems.add(menuItem);
-		
+
 		menuItem = new MenuItem(menu, SWT.PUSH);
 		menuItem.setText("Guardar &como...");
 		menuItem.addSelectionListener(AccionesProvider.guardarComo);
 		proyectoItems.add(menuItem);
-		
+
 		menuItem = new MenuItem(menu, SWT.SEPARATOR);
-		
+
 		menuItem = new MenuItem(menu, SWT.PUSH);
 		menuItem.setText("&Exportar");
 		menuItem.addSelectionListener(AccionesProvider.exportar);
 		proyectoItems.add(menuItem);
-		
+
 		menuItem = new MenuItem(menu, SWT.PUSH);
 		menuItem.setText("&Imprimir");
 		menuItem.addSelectionListener(AccionesProvider.imprimir);
 		proyectoItems.add(menuItem);
-		
+
 		menuItem = new MenuItem(menu, SWT.SEPARATOR);
 
 		menuItem = new MenuItem(menu, SWT.PUSH);
 		menuItem.setText("&Salir");
 		menuItem.addSelectionListener(AccionesProvider.salir);
-		
+
 		/*
 		 * Ver
 		 */
-		
+
 		menuItem = new MenuItem(this.menuBar, SWT.CASCADE);
 		menuItem.setText("&Ver");
-		
+
 		menu = new Menu(principal.getShell(), SWT.DROP_DOWN);
 		menuItem.setMenu(menu);
-		
+
 		menuItem = new MenuItem(menu, SWT.PUSH);
 		menuItem.setText("Zoom ( &- )");
 		menuItem.addSelectionListener(AccionesProvider.zoomOut);
 		proyectoItems.add(menuItem);
-		
+
 		menuItem = new MenuItem(menu, SWT.PUSH);
 		menuItem.setText("Zoom ( &+ )");
 		menuItem.addSelectionListener(AccionesProvider.zoomIn);
 		proyectoItems.add(menuItem);
-		
+
 		menuItem = new MenuItem(menu, SWT.SEPARATOR);
-		
+
 		menuItem = new MenuItem(menu, SWT.PUSH);
 		menuItem.setText("&Explorador del Proyecto");
 		menuItem.addSelectionListener(AccionesProvider.mostrarArbol);
 		proyectoItems.add(menuItem);
-		
+
 		/*
 		 * Proyecto
 		 */
 		menuItem = new MenuItem(this.menuBar, SWT.CASCADE);
 		menuItem.setText("&Proyecto");
-		
+
 		menu = new Menu(principal.getShell(), SWT.DROP_DOWN);
 		menuItem.setMenu(menu);
 
@@ -114,12 +115,12 @@ public class MenuBuilder implements Observer {
 		menuItem.setText("&Nuevo Diagrama");
 		menuItem.addSelectionListener(AccionesProvider.nuevoDiagrama);
 		proyectoItems.add(menuItem);
-		
+
 		menuItem = new MenuItem(menu, SWT.PUSH);
 		menuItem.setText("Agregar &Entidad");
 		menuItem.addSelectionListener(AccionesProvider.agregarEntidad);
 		proyectoItems.add(menuItem);
-		
+
 		menuItem = new MenuItem(menu, SWT.PUSH);
 		menuItem.setText("Agregar &Relacion");
 		menuItem.addSelectionListener(AccionesProvider.agregarRelacion);
@@ -129,53 +130,53 @@ public class MenuBuilder implements Observer {
 		menuItem.setText("Agregar &Jerarquia");
 		menuItem.addSelectionListener(AccionesProvider.agregarJerarquia);
 		proyectoItems.add(menuItem);
-		
+
 		menuItem = new MenuItem(menu, SWT.SEPARATOR);
-		
+
 		menuItem = new MenuItem(menu, SWT.PUSH);
 		menuItem.setText("&Validar Diagrama");
 		menuItem.addSelectionListener(AccionesProvider.validar);
 		proyectoItems.add(menuItem);
-		
+
 		menuItem = new MenuItem(menu, SWT.PUSH);
 		menuItem.setText("Validar &Proyecto");
 		menuItem.addSelectionListener(AccionesProvider.validarProyecto);
 		proyectoItems.add(menuItem);
-		
+
 		/*Agregado para empezar a poner los nuevos comandos*/
-	
+
 		menuItem = new MenuItem(menuBar, SWT.CASCADE);
 		menuItem.setText("Diagrama L�gico");
-		
+
 		menu = new Menu(principal.getShell(), SWT.DROP_DOWN);
 		menuItem.setMenu(menu);
-		
+
 		menuItem = new MenuItem(menu, SWT.PUSH);
 		menuItem.setText("&Obtener Diagrama L�gico");
 		menuItem.addSelectionListener(AccionesProvider.obtenerDiagramaLogico);
-                proyectoItems.add(menuItem);
-                
-                
-                
-                menuItem = new MenuItem(menuBar, SWT.CASCADE);
+		proyectoItems.add(menuItem);
+
+
+
+		menuItem = new MenuItem(menuBar, SWT.CASCADE);
 		menuItem.setText("Opciones");
-		
+
 		menu = new Menu(principal.getShell(), SWT.DROP_DOWN);
 		menuItem.setMenu(menu);
-		
+
 		menuItem = new MenuItem(menu, SWT.PUSH);
 		menuItem.setText("&Pasar Diagrama a modelo de tablas...");
-                menuItem.addSelectionListener(AccionesProvider.pasajeLogico);
-               
-                proyectoItems.add(menuItem);
+		menuItem.addSelectionListener(AccionesProvider.pasajeLogico);
 
-                
-                
-             
-                
-                
 		proyectoItems.add(menuItem);
-              
+
+
+
+
+
+
+		proyectoItems.add(menuItem);
+
 
 
 		/*
@@ -191,30 +192,30 @@ public class MenuBuilder implements Observer {
 		menuItem.setText("&Sobre " + Principal.APP_NOMBRE + "...");
 
 		principal.getShell().setMenuBar(menuBar);
-		
+
 		this.habilitarItems(false);
 	}
-	
+
 	private void habilitarItems(boolean habilitar) {
 		for (MenuItem item : this.proyectoItems)
 			item.setEnabled(habilitar);
-     
+
 	}
-        
-        private void habilitarItemPasajeLogico(boolean habilitar) {
+
+	private void habilitarItemPasajeLogico(boolean habilitar) {
 		for (MenuItem item : this.proyectoItems){
-                    if(item.getText().equals("&Pasar Diagrama a modelo de tablas..."))
-			item.setEnabled(habilitar);
-        }
-     
+			if(item.getText().equals("&Pasar Diagrama a modelo de tablas..."))
+				item.setEnabled(habilitar);
+		}
+
 	}
-        
-       
+
+
 
 	@Override
 	public void update(Observable o, Object arg) {
 		this.habilitarItems(this.principal.getProyecto() != null);
-                this.habilitarItemPasajeLogico(!this.principal.proyecto.getDiagramaActual().esLogico());
-              
+		this.habilitarItemPasajeLogico(!((Proyecto)this.principal.getProyecto()).getDiagramaActual().esLogico());
+
 	}
 }

@@ -3,9 +3,11 @@ package mereditor.control;
 import java.util.HashMap;
 import java.util.Map;
 
+import mereditor.interfaz.swt.Principal;
 import mereditor.interfaz.swt.editores.EditorFactory;
+import mereditor.interfaz.swt.figuras.EntidadDERFigure;
 import mereditor.interfaz.swt.figuras.EntidadFigure;
-import mereditor.interfaz.swt.figuras.Figura;
+import mereditor.interfaz.swt.figuras.EntidadLogicaFigure;
 import mereditor.modelo.Atributo;
 import mereditor.modelo.Entidad;
 
@@ -30,14 +32,19 @@ public class EntidadControl extends Entidad implements Control<Entidad>, MouseLi
 	}
 
 	@Override
-	public Figura<Entidad> getFigura(String idDiagrama) {
+	public EntidadFigure getFigura(String idDiagrama) {
 		if (!this.figures.containsKey(idDiagrama)) {
-			EntidadFigure figura = new EntidadFigure(this);
+			EntidadFigure figura;
+			if (Principal.getInstance().isVistaLogica()){
+				figura = new EntidadLogicaFigure(this);
+			}else{
+				figura = new EntidadDERFigure(this);
+			}
 			this.figures.put(idDiagrama, figura);
-			
+
 			this.setPosicionInicial(figura);
 		}
-		
+
 		this.figures.get(idDiagrama).actualizar();
 
 		return this.figures.get(idDiagrama);
@@ -48,12 +55,12 @@ public class EntidadControl extends Entidad implements Control<Entidad>, MouseLi
 	 * @param figura
 	 */
 	private void setPosicionInicial(Figure figura) {
-		figura.setBounds(figura.getBounds().getTranslated(100, 100));		
+		figura.setBounds(figura.getBounds().getTranslated(100, 100));
 	}
 
 	@Override
 	public void dibujar(Figure contenedor, String idDiagrama) {
-		EntidadFigure figuraEntidad = (EntidadFigure) this.getFigura(idDiagrama);
+		EntidadFigure figuraEntidad = this.getFigura(idDiagrama);
 		contenedor.add(figuraEntidad);
 
 		/*
@@ -71,7 +78,7 @@ public class EntidadControl extends Entidad implements Control<Entidad>, MouseLi
 	public Map<String, EntidadFigure> getFiguras() {
 		return this.figures;
 	}
-	
+
 	@Override
 	public String getNombreIcono() {
 		return "entidad.png";
