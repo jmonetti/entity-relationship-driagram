@@ -5,7 +5,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
-import mereditor.interfaz.swt.figuras.EntidadFigure;
+import mereditor.interfaz.swt.figuras.EntidadDERFigure;
 import mereditor.interfaz.swt.figuras.Figura;
 import mereditor.modelo.Atributo;
 import mereditor.modelo.Diagrama;
@@ -58,7 +58,7 @@ public class DiagramaControl extends Diagrama implements Control<Diagrama> {
 			List<Connection> conexiones = new ArrayList<>();
 
 			EntidadControl entidadCtrl = (EntidadControl) identificador.getEntidad();
-			EntidadFigure figEntidad = (EntidadFigure) entidadCtrl.getFigura(this.id);
+			EntidadDERFigure figEntidad = (EntidadDERFigure) entidadCtrl.getFigura(this.id);
 
 			// Internos y mixtos
 			if (identificador.isInterno()) {

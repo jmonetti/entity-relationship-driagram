@@ -1,5 +1,6 @@
 package mereditor.control;
 
+import mereditor.interfaz.swt.figuras.AtributoDERFigure;
 import mereditor.interfaz.swt.figuras.Figura;
 import mereditor.modelo.base.Componente;
 
@@ -14,7 +15,7 @@ public interface Control<T extends Componente> {
 	 * @param idDiagrama
 	 * @return
 	 */
-	public Figura<T> getFigura(String idDiagrama);
+	public Figura getFigura(String idDiagrama);
 
 	/**
 	 * Agrega la figura de este control y las figuras de los hijos al

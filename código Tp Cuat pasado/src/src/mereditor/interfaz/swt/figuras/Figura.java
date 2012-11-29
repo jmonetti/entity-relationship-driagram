@@ -47,6 +47,15 @@ public abstract class Figura<T extends Componente> extends Figure {
 	protected Color backColor = defaultBackColor;
 	protected T componente;
 	protected Label lblName;
+	
+	public Label getLblName() {
+		return lblName;
+	}
+
+	public void setLblName(Label lblName) {
+		this.lblName = lblName;
+	}
+
 	/**
 	 * Lista de figuras que se deben mover junto con esta
 	 */

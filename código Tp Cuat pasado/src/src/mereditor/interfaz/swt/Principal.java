@@ -123,6 +123,19 @@ public class Principal extends Observable implements FigureListener {
 	 * 
 	 * @param args
 	 */
+	/**
+	 * Indica si la vista es lógica
+	 */
+	private boolean esLogico = false;
+	
+	public boolean isVistaLogica() {
+		return esLogico;
+	}
+
+	public void setVistaLogica(boolean esLogico) {
+		this.esLogico =esLogico;
+	}
+
 	public static void main(String args[]) {
 		Display display = Display.getDefault();
 		Shell shell = new Shell(display, SWT.SHELL_TRIM);
@@ -187,7 +200,7 @@ public class Principal extends Observable implements FigureListener {
 	/**
 	 * Proyecto que se encuentra abierto.
 	 */
-	public Proyecto proyecto;
+	private Proyecto proyecto;
 
 	/**
 	 * Handler del evento cuando se cierra la aplicaciÃ³n. Si hay modificaciones
@@ -324,8 +337,12 @@ public class Principal extends Observable implements FigureListener {
 	 * Abre un proyecto.
 	 */
 	public void abrirProyecto() {
+		
+		//TODO: descomentar para probar la vista lógica
+		//Principal.getInstance().setVistaLogica(true);
+		
 		int resultado = this.preguntarGuardar();
-
+	
 		if (resultado != SWT.CANCEL) {
 			FileDialog fileDialog = new FileDialog(this.shell);
 			fileDialog.setFilterExtensions(extensionProyecto);
@@ -489,7 +506,7 @@ public class Principal extends Observable implements FigureListener {
 				"Ingresar nombre", "Nombre");
 		if (resultado.result == Resultado.OK) {
 			DiagramaControl nuevoDiagrama = new DiagramaControl(this.proyecto);
-			if(esLogico){
+			if(Principal.getInstance().isVistaLogica()){
 				nuevoDiagrama.setLogico(true);
 			}
 			nuevoDiagrama.setNombre(resultado.value);
