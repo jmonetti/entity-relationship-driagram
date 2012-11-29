@@ -134,7 +134,7 @@ class RepresentacionParserXml extends ParserXml {
 		this.root = doc.createElement(Constants.PROYECTO_TAG);
 		doc.appendChild(this.root);
 
-		if(this.proyecto.getDiagramaRaiz().esLogico())
+		if(!this.proyecto.getDiagramaRaiz().esLogico()) //El diagrama raiz nunca va a ser logico
 			this.generarDiagramaXmlLogico(this.root, this.proyecto.getDiagramaRaiz());
 
 		return doc;

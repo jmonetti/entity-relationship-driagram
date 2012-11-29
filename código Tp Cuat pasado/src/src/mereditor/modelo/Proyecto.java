@@ -167,6 +167,21 @@ public class Proyecto extends ComponenteNombre implements ProyectoProxy {
 			this.diagramaActual.agregar(componente);
 	}
 	
+	public void agregarSoloAlProyecto(Componente componente) {
+		if (!this.componentes.containsKey(componente.getId()))
+			this.componentes.put(componente.getId(), componente);
+
+	
+	}
+	
+	
+	
+	//Solo agrega al proyecto y no al diagrama actual
+	public void agregarAlProyecto(Componente componente) {
+		if (!this.componentes.containsKey(componente.getId()))
+			this.componentes.put(componente.getId(), componente);
+	}
+	
 	/**
 	 * Elimina el componente de la colección de componentes.
 	 * @param componente
@@ -391,4 +406,6 @@ public class Proyecto extends ComponenteNombre implements ProyectoProxy {
 	public String toString() {
 		return this.getNombre();
 	}
+
+	
 }

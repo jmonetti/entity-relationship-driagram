@@ -431,25 +431,27 @@ public class Principal extends Observable implements FigureListener {
 			ParserXml modelo;
 			try {
 				
-				//for (Diagrama dia : ){
-					//Diagrama d = Transformacion.getInstance().tranformarALogico(this.proyecto.getDiagramaActual(), proyecto);
-					//proyecto.agregar(d);
-				//}
 				
+//					Diagrama d = Transformacion.getInstance().tranformarALogico(this.proyecto.getDiagramaActual(), proyecto);
+//					proyecto.agregarSoloAlProyecto(d);
+//					this.actualizarVista();
+//					TreeManager.agregarADiagramaActual(d);
+//					this.modificado(true);
+				
+				
+				
+				//DER
 				modelo = new ParserXml(this.proyecto);
-				this.guardarXml(modelo.generarXmlProyecto(), path);
-				this.guardarXml(modelo.generarXmlComponentes(), dir
-						+ this.proyecto.getComponentesPath());
-				this.guardarXml(modelo.generarXmlRepresentacion(), dir
-						+ this.proyecto.getRepresentacionPath());
+				this.guardarXml(modelo.generarXmlProyecto(), path); //genero el xml de referencia al resto de los xml
+				
+				this.guardarXml(modelo.generarXmlComponentes(), dir + this.proyecto.getComponentesPath());
+				this.guardarXml(modelo.generarXmlRepresentacion(), dir + this.proyecto.getRepresentacionPath());
+				
 				//Logico
 				modelo = new ParserXml(this.proyecto);
+				this.guardarXml(modelo.generarXmlComponentesLogicos(), dir + this.proyecto.getComponentesPathLogico());
+				this.guardarXml(modelo.generarXmlRepresentacionLogico(), dir + this.proyecto.getRepresentacionPathLogico());
 				
-				
-				this.guardarXml(modelo.generarXmlComponentesLogicos(), dir
-						+ this.proyecto.getComponentesPathLogico());
-				this.guardarXml(modelo.generarXmlRepresentacionLogico(), dir
-						+ this.proyecto.getRepresentacionPathLogico());
 			} catch (Exception e) {
 				this.error("Ocurrió un error al guardar el proyecto.");
 				e.printStackTrace();

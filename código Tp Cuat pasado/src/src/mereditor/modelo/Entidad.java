@@ -38,7 +38,7 @@ public class Entidad extends ComponenteNombre implements ComponenteAtributos {
 		this.padres = entidad.padres;
 		this.tipo = entidad.tipo;
 		
-		this.relaciones = new HashSet<Relacion>();;
+		this.relaciones = new HashSet<Relacion>();
 		
 		//recorro todas las relaciones y se las agrego a la nueva entidad
 		for(Relacion relacion : entidad.getRelaciones()){
