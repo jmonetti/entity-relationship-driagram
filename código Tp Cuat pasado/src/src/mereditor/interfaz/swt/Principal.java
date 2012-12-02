@@ -124,7 +124,7 @@ public class Principal extends Observable implements FigureListener {
 	 * @param args
 	 */
 	/**
-	 * Indica si la vista es lógica
+	 * Indica si la vista es lï¿½gica
 	 */
 	private boolean esLogico = false;
 	
@@ -299,46 +299,44 @@ public class Principal extends Observable implements FigureListener {
         	/**
 	 * Pasaje del modelo actual a logico
 	 */
-	public void pasajeLogicoDiagrama() {
+	public void pasajeLogicoDiagrama() {             
             
             /*Me fijo si ya existia una transformacion de ese diagrama en el proyecto*/
         //    this.proyecto.getDiagramas().
-            
-            /*Lo primero que hago es obtener el diagrama logico a partir del metodo trasnformacion*/
-            DiagramaControl diagramaLogico =   Transformacion.getInstance().tranformarALogico(this.proyecto.getDiagramaActual(), proyecto);
-            
-            /*Busco si ya habia un logico generado en el proyecto para ese diagrama fisico, hablando con juan pensamos 
-             * en q si uno forma un diagrama logico a partir de un fisico una vez la segunda vez que lo haga deberia eliminar el anterior y
-             * agregar el nuevo al proyecto, esto se haria buscando por el nombre del diagrama en el proyecto por ende no puede haber mas de un nombre por cada diagrama
-             * en el proyecto es una limitacion pero safa me parece...
-             *              
-             * */
-      
-       
-            Diagrama dia=this.proyecto.contiene_diagrama(diagramaLogico.getNombre());
-            if(dia!=null){
+            /* Valido el diagrama que se quiere pasar a logico por ahora le pongo != null ya siempre tira q no es valido*/
+      if(this.proyecto.getDiagramaActual().validar()!=null){
+                
+        DiagramaControl diagramaLogico =   Transformacion.getInstance().tranformarALogico(this.proyecto.getDiagramaActual(), proyecto);
+
+        Diagrama dia=this.proyecto.contiene_diagrama(diagramaLogico.getNombre());
+        if(dia!=null){
             System.out.println("Se elimina");
             proyecto.eliminar(dia);
-            }
-            /*Ahora inserto la nueva transformacion al proyecto*/
-            this.proyecto.agregar(diagramaLogico);
-            this.proyecto.setDiagramaActual(diagramaLogico.getId());
-            // Notificar a la toolbar que hay un proyecto abierto.
-		this.setChanged();
-		this.notifyObservers();
+        }
+        /*Ahora inserto la nueva transformacion al proyecto*/
+
+        proyecto.agregarSoloAlProyecto(diagramaLogico);
+
+        this.proyecto.setDiagramaActual(diagramaLogico.getId());
+        // Notificar a la toolbar que hay un proyecto abierto.
+            this.setChanged();
+            this.notifyObservers();
          
 
-				this.actualizarVista();
-    
-            System.out.println("Se pasa al logico");
-	}
+        this.actualizarVista();
+        TreeManager.agregarADiagramaActual(diagramaLogico);
+        this.modificado(true);
+
+        System.out.println("Se pasa al logico");
+	}else  System.out.println("El diagrama actual no es valido");
+        }
 
 	/**
 	 * Abre un proyecto.
 	 */
 	public void abrirProyecto() {
 		
-		//TODO: descomentar para probar la vista lógica
+		//TODO: descomentar para probar la vista lï¿½gica
 		//Principal.getInstance().setVistaLogica(true);
 		
 		int resultado = this.preguntarGuardar();
@@ -525,6 +523,10 @@ public class Principal extends Observable implements FigureListener {
 	 */
 	public void actualizarVista() {
 		this.panelDiagrama.actualizar();
+                 // Notificar a la toolbar que hay un proyecto abierto.
+            this.setChanged();
+            this.notifyObservers();
+         
 	}
 
 	/**
