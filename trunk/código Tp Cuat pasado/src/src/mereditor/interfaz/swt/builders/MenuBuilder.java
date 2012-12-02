@@ -204,7 +204,7 @@ public class MenuBuilder implements Observer {
 
 	private void habilitarItemPasajeLogico(boolean habilitar) {
 		for (MenuItem item : this.proyectoItems){
-			if(item.getText().equals("&Pasar Diagrama a modelo de tablas..."))
+			if(!item.getText().equals("&Abrir")&&!item.getText().equals("&Guardar")&&!item.getText().equals("Guardar &como..."))
 				item.setEnabled(habilitar);
 		}
 
