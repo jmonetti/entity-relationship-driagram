@@ -41,7 +41,7 @@ public class Transformacion {
 	    	dLogico.setLogico(true);
 	    	
 	    	dLogico = transformarAtributos(diagramaDER, dLogico,proyecto);
-	    	dLogico = eliminarEntidadesGenerales(dLogico, proyecto);
+	    	
 	    	
 	    	dLogico.setNombre("DiagramaLogico-" + diagramaDER.getNombre());
 	    	i++;
@@ -78,7 +78,8 @@ public class Transformacion {
 						AtributoControl atributoCopia = new AtributoControl(at);
 						atributoCopia.setLogico(true);
 						entidadComp.addAtributo(atributoCopia);	
-						proyecto.agregar(atributoCopia);
+						//proyecto.agregarSoloAlProyecto(atributoCopia);
+						//dLogico.agregar(atributoCopia);
 					}
 					
 					RelacionControl relacionCopia = new RelacionControl("RelacionCompuesta"+ atributo.getNombre());
@@ -99,10 +100,12 @@ public class Transformacion {
 					relacionCopia.addParticipante(er1);
 					relacionCopia.addParticipante(er2);
 					
-					entidadComp.addRelacion(relacionCopia);
-					entidadNew.addRelacion(relacionCopia);
+					//entidadComp.addRelacion(relacionCopia);
+					//entidadNew.addRelacion(relacionCopia);
+					
 					proyecto.agregarSoloAlProyecto(relacionCopia);
 					dLogico.agregar(relacionCopia);
+					
 					//Agrego la nueva entidad creada a partir del tributo compuesto al diagrama
 					dLogico.agregar(entidadComp);
 					proyecto.agregarSoloAlProyecto(entidadComp);
@@ -131,12 +134,13 @@ public class Transformacion {
 					relacionCopia.addParticipante(er1);
 					relacionCopia.addParticipante(er2);
 					
-					entidadComp.addRelacion(relacionCopia);
-					entidadNew.addRelacion(relacionCopia);
+					
 					
 					//Agrego la nueva entidad creada a partir del tributo compuesto al diagrama
 					dLogico.agregar(entidadComp);
+					dLogico.agregar(relacionCopia);
 					proyecto.agregarSoloAlProyecto(entidadComp);
+					proyecto.agregarSoloAlProyecto(relacionCopia);
 					
 				} else {
 					// no es ni compuesto ni polivalente. Todo Piola.
@@ -147,6 +151,9 @@ public class Transformacion {
 				}
 			}
 			
+			//Agrego atributos en caso de jerarquia
+			entidadNew = agregarAtributosJerarquia(entidadNew, diagramaDER, entidad, proyecto);
+			
 			dLogico.agregar(entidadNew);
 			proyecto.agregarSoloAlProyecto(entidadNew);
 		}
@@ -156,18 +163,50 @@ public class Transformacion {
 	}
 	
 	
+	private EntidadControl agregarAtributosJerarquia(EntidadControl entidadNew, Diagrama diagramaDER, Entidad entidad,Proyecto proyecto) {
+		
+		 Set<Jerarquia> jerarquias = diagramaDER.getJerarquias(true);
+		 
+		/* for( Jerarquia j : jerarquias){
+			 for(Entidad e : j.getDerivadas()){
+				 if(e.getId().equals(entidad.getId())){
+					//recorro toodos los atributos del padre y se los agrego al hijo
+					for(Atributo atributo : j.getGenerica().getAtributos()){
+						
+						AtributoControl atributoCopia = new AtributoControl(atributo);
+						atributoCopia.setLogico(true);
+						entidadNew.addAtributo(atributoCopia);	
+					}
+					
+					//recorro todas las relaciones del padre y se las agrego al hijo
+					/*for(Relacion relacion : j.getGenerica().getRelaciones()){
+						
+						relacion.modificarParticipante(j.getGenerica().getId(),entidadNew);
+						entidadNew.addRelacion(relacion);
+						proyecto.agregarSoloAlProyecto(relacion);
+						
+					}
+					 
+				 }
+					 
+			 }
+		 }*/
+		
+		return entidadNew;
+	}
+
 	/**
 	 *  Para la conversion jerarquica se Eliminan la entidades generales
 	 *  y heredandan a las especializadas sus atributos y relaciones
 	 * @param dLogico Diagrama Logico al que se le realiza la transformacion de jerarquia
 	 * @return Diagrama logico transformado
 	 */
-	private DiagramaControl eliminarEntidadesGenerales(DiagramaControl dLogico, Proyecto proyecto) {
+	private DiagramaControl eliminarEntidadesGenerales(DiagramaControl dLogico,Diagrama dDER, Proyecto proyecto) {
 		
 		
 		//obtengo todas las jerarquias del diagrama 
 		//@param false: dado que un componente diagrama no tiene padre 
-		Set<Jerarquia> jerarquiasDiagrama = dLogico.getJerarquias(false);
+		Set<Jerarquia> jerarquiasDiagrama = dDER.getJerarquias(false);
 		
 		//Para cada jerarquia voy a pasar los atributos a las entidades hijas
 		for( Jerarquia jerarquia : jerarquiasDiagrama){
