@@ -138,6 +138,11 @@ public class Diagrama extends ComponenteNombre {
 	public Observacion validar() {
 		Observacion observacion = super.validar();
 
+		if(this.esLogico()){
+			this.validacion.setEstado(EstadoValidacion.VALIDADO);
+			return observacion;
+		}
+		
 		for (Componente componente : this.componentes)
 			observacion.addObservacion(componente.validar());
 
