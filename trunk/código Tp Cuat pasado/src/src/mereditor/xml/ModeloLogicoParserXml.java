@@ -80,6 +80,8 @@ class ModeloLogicoParserXml extends ParserXml {
 		if(diagramaXml == null) return;
 		
 		Diagrama diagrama = (Diagrama) this.resolver(this.obtenerId(diagramaXml));
+                diagrama.setLogico(true);
+                System.out.println("prin log= "+diagrama.getNombre());
 		// Obtener la validacion principal
 		//Validacion validacion = (Validacion) this.obtenerValidacion(this.root);
 

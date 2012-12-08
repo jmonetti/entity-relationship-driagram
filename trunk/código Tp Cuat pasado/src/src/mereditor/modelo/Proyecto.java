@@ -1,6 +1,7 @@
 package mereditor.modelo;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -38,6 +39,9 @@ public class Proyecto extends ComponenteNombre implements ProyectoProxy {
 	 * Path al archivo donde se guardo por ultima vez el proyecto abierto.
 	 */
 	protected String path;
+        
+        /*Lista de todos los diagramas logicos*/
+        ArrayList lista_diagramasLogicos=null;
 	
 
 	/**
@@ -334,7 +338,10 @@ public class Proyecto extends ComponenteNombre implements ProyectoProxy {
 		return Componente.filtrarComponentes(Diagrama.class,
 				this.componentes.values());
 	}
-
+        
+        
+        
+      
 	/**
 	 * Toma como nombre de este proyecto el del diagrama raíz.
 	 */

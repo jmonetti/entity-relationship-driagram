@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import mereditor.modelo.Diagrama;
 
 import mereditor.modelo.validacion.Observacion;
 import mereditor.modelo.validacion.Validable;
@@ -206,6 +207,8 @@ public abstract class Componente implements Comparable<Componente>, Validable {
 		return lista;
 	}
 
+     
+        
 	@Override
 	public int compareTo(Componente componente) {
 		return this.toString().compareTo(componente.toString());

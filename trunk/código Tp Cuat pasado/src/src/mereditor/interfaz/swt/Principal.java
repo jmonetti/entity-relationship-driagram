@@ -350,6 +350,7 @@ public class Principal extends Observable implements FigureListener {
 				try {
 					ParserXml modelo = new ParserXml(path);
 					this.proyecto = modelo.parsear();
+                                       
 					this.cargarProyecto();
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -372,6 +373,26 @@ public class Principal extends Observable implements FigureListener {
 		TreeManager.cargar(this.proyecto);
 		this.mostrarArbol(true);
 		// Notificar a la toolbar que hay un proyecto abierto.
+                
+                
+                // System.out.println(this.proyecto.getDiagramasLogicos());
+                 
+                      Iterator it = this.proyecto.getDiagramas().iterator();
+            Diagrama dia=null;
+            
+	        while(it.hasNext()) {
+
+                dia = (Diagrama) it.next();
+                if(dia.esLogico()){
+	         System.out.println( dia.getNombre());
+                 proyecto.agregar(dia);
+                 TreeManager.agregarADiagramaActual(dia);
+                }
+                    
+	         
+	        }
+                
+                
 		this.setChanged();
 		this.notifyObservers();
 
