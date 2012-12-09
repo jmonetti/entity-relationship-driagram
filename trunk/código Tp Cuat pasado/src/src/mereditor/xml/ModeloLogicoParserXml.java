@@ -107,8 +107,11 @@ class ModeloLogicoParserXml extends ParserXml {
 	 * @throws Exception
 	 */
 	public Componente resolver(String id) throws Exception {
-		if (this.proyecto.contiene(id))
-			return this.proyecto.getComponente(id);
+		if (this.proyecto.contiene(id)){
+                    Componente componente= this.proyecto.getComponente(id);
+                    componente.setLogico(true);
+			return componente;
+                }
 
 		return this.buscarParsear(id);
 	}
@@ -517,6 +520,7 @@ class ModeloLogicoParserXml extends ParserXml {
 	}
 
 	Element agregarDiagramas(Element elemento) {
+            
 		return this.agregarElemento(elemento, Constants.DIAGRAMAS_TAG);
 	}
 

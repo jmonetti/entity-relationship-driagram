@@ -383,9 +383,18 @@ public class Principal extends Observable implements FigureListener {
 	        while(it.hasNext()) {
 
                 dia = (Diagrama) it.next();
+              
+                 if(dia.getNombre().contains("Logico")){
+                        System.out.println( dia.getNombre());
+                            dia.setLogico(true);
+                        
+                 }
+                     
                 if(dia.esLogico()){
-	         System.out.println( dia.getNombre());
-                 proyecto.agregar(dia);
+	   
+                 proyecto.agregarSoloAlProyecto(dia);
+         
+         
                  TreeManager.agregarADiagramaActual(dia);
                 }
                     
