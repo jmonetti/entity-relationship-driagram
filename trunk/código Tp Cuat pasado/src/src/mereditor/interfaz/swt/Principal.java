@@ -64,6 +64,7 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.ToolBar;
+import org.eclipse.swt.widgets.TreeItem;
 import org.w3c.dom.Document;
 
 /**
@@ -360,6 +361,55 @@ public class Principal extends Observable implements FigureListener {
 		}
 	}
 
+        
+        
+        
+   public Diagrama tienelogico(Diagrama dia) {
+            
+        
+             
+          
+            boolean encontrado=false;
+            Diagrama logico=null;
+            Iterator it = this.proyecto.getDiagramas().iterator();
+            
+            String nombre_macheo="DiagramaLogico-"+dia.getNombre();
+            System.out.println("Nombre macheo logico= "+nombre_macheo);
+            
+	        while(it.hasNext()&& !encontrado) {
+
+                logico = (Diagrama) it.next();
+              
+                 if(logico.getNombre().equals(nombre_macheo)){
+                        System.out.println("logico encontrado= "+ logico.getNombre());
+                encontrado=true;   
+                
+                     proyecto.agregarSoloAlProyecto(logico);
+
+        this.proyecto.setDiagramaActual(logico.getId());
+        // Notificar a la toolbar que hay un proyecto abierto.
+            this.setChanged();
+            this.notifyObservers();
+         
+
+        this.actualizarVista();
+        TreeManager.agregarADiagramaActual(logico);
+        this.modificado(true);
+                
+                
+                
+                        
+                 }
+                     
+            
+		
+                 
+        }
+                return logico;
+           }
+        
+        
+        
 	/**
 	 * Carga el proyecto actual.
 	 */
@@ -371,42 +421,19 @@ public class Principal extends Observable implements FigureListener {
 		this.panelDiagrama.actualizar();
 		// Carga inicial del arbol.
 		TreeManager.cargar(this.proyecto);
-		this.mostrarArbol(true);
+		
 		// Notificar a la toolbar que hay un proyecto abierto.
                 
                 
                 // System.out.println(this.proyecto.getDiagramasLogicos());
-                 
-                      Iterator it = this.proyecto.getDiagramas().iterator();
-            Diagrama dia=null;
             
-	        while(it.hasNext()) {
-
-                dia = (Diagrama) it.next();
-              
-                 if(dia.getNombre().contains("Logico")){
-                        System.out.println( dia.getNombre());
-                            dia.setLogico(true);
-                        
-                 }
-                     
-                if(dia.esLogico()){
-	   
-                 proyecto.agregarSoloAlProyecto(dia);
-         
-         
-                 TreeManager.agregarADiagramaActual(dia);
-                }
-                    
-	         
-	        }
-                
-                
+                this.mostrarArbol(true);
 		this.setChanged();
 		this.notifyObservers();
 
-		this.modificado(false);
+		this.modificado(true);
 		this.actualizarEstado();
+            
 	}
 
 	/**
