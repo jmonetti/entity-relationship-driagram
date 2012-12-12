@@ -22,6 +22,7 @@ public class TreeManager {
 	private static CTabItem tab;
 	private static CTabFolder folder;
 	private static TreeItem diagramaActivo;
+      
 
 	public static Tree build(Composite composite) {
 		new TreeManager(composite);
@@ -68,8 +69,16 @@ public class TreeManager {
 
 		diagramaActivo = item;
 
-		for (Diagrama diagramaHijo : diagrama.getDiagramas())
+		for (Diagrama diagramaHijo : diagrama.getDiagramas()){
+                       
 			agregar(diagramaHijo, item);
+                            
+                        if(Principal.getInstance().tienelogico(diagramaHijo)!=null){
+                         
+                        System.out.println("Se agrego un logico a: "+diagramaHijo.getNombre());
+                        }
+                        
+                }
 
 		for (Componente componente : diagrama.getEntidades(false))
 			agregar(componente, item);
@@ -82,6 +91,24 @@ public class TreeManager {
 
 		item.setExpanded(true);
 	}
+        
+        
+          /**
+	 * Devuelve el item que se encuentra con el nombre del diagrama
+	 * 
+	 * @return
+	 */
+	public static  void getItemEsp(String nombre_diagrama) {
+            int cantidad;
+        cantidad = tree.getItemCount();
+        for(int i=0; i<cantidad;i++){
+        System.out.println("Lista itemsooo: "+tree.getItem(i).getText());
+        }
+		
+
+		
+	}
+        
 
 	/**
 	 * Agregado de diagrama no principal y sus hijos.
@@ -95,9 +122,12 @@ public class TreeManager {
 		item.setData(diagrama);
 		String nombreIcono = ((Control<?>) diagrama).getNombreIcono();
 		item.setImage(Principal.getIcono(nombreIcono));
-
-		for (Diagrama diagramaHijo : diagrama.getDiagramas())
+                 diagramaActivo = item;
+		for (Diagrama diagramaHijo : diagrama.getDiagramas()){
 			agregar(diagramaHijo, item);
+                    
+                    
+                }        
 
 		for (Componente componente : diagrama.getEntidades(false))
 			agregar(componente, item);
@@ -149,6 +179,8 @@ public class TreeManager {
 	public static void setDiagramaActivo(TreeItem diagramaActivo) {
 		TreeManager.diagramaActivo = diagramaActivo;
 	}
+        
+        
 	
 	private CTabFolder2Listener minimizar = new CTabFolder2Adapter() {
 		public void minimize(CTabFolderEvent event) {

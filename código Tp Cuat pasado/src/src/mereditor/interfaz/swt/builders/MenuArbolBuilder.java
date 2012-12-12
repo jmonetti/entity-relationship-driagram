@@ -1,5 +1,6 @@
 package mereditor.interfaz.swt.builders;
 
+import java.util.Iterator;
 import mereditor.interfaz.swt.Principal;
 import mereditor.interfaz.swt.editores.EditorFactory;
 import mereditor.modelo.Diagrama;
@@ -67,6 +68,9 @@ public class MenuArbolBuilder {
 
 		return null;
 	}
+        
+      
+        
 
 	/**
 	 * Devuelve el componente asociado al item que se encuentra seleccionado.
