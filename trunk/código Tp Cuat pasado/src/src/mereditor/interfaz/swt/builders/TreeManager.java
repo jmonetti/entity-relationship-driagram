@@ -1,5 +1,6 @@
 package mereditor.interfaz.swt.builders;
 
+import java.util.Iterator;
 import mereditor.control.Control;
 import mereditor.interfaz.swt.Principal;
 import mereditor.modelo.Diagrama;
@@ -18,7 +19,7 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
 public class TreeManager {
-	private static Tree tree;
+	public static Tree tree;
 	private static CTabItem tab;
 	private static CTabFolder folder;
 	private static TreeItem diagramaActivo;
@@ -48,6 +49,32 @@ public class TreeManager {
 
 		tab.setControl(tree);
 		tab.setShowClose(false);
+	}
+        
+        
+           /**
+	 * Elimina item de un dia logico 
+	 * 
+	 * @return
+	 */
+	public  static  void  eliminarItem() {
+      for(int i=0;i<tree.getItemCount();i++) {
+             TreeManager.tree.getItem(i).getData().toString();
+            }
+            /*
+	
+            	Componente componente = getComponente();
+			TreeItem current = getItem();
+			TreeItem parent = current.getParentItem();
+			if (parent != null) {
+				Diagrama diagrama = (Diagrama) parent.getData();
+				diagrama.eliminar(componente);
+
+				Principal.getInstance().actualizarVista();
+				current.dispose();
+			}
+		*/
+			
 	}
 
 	/**
@@ -105,6 +132,18 @@ public class TreeManager {
         System.out.println("Lista itemsooo: "+tree.getItem(i).getText());
         }
 		
+
+		
+	}
+        
+        public static  void getItemDia(String nombre_diagrama) {
+            int cantidad;
+        cantidad = tree.getItemCount();
+      
+ /*   for(int i=0; i<cantidad;i++){
+      System.out.println("Lista itemsooo: "+tree.getItem(0).getItem(0).dispose();
+   //     }
+		*/
 
 		
 	}
