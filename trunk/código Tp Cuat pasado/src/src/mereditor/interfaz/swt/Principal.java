@@ -312,7 +312,20 @@ public class Principal extends Observable implements FigureListener {
         Diagrama dia=this.proyecto.contiene_diagrama(diagramaLogico.getNombre());
         if(dia!=null){
             System.out.println("Se elimina");
-            proyecto.eliminar(dia);
+          
+            
+         
+			Diagrama parent = (Diagrama) dia.getPadre();
+			if (parent != null) {
+				
+				parent.eliminar(dia);
+
+				Principal.getInstance().actualizarVista();
+				
+            
+              proyecto.eliminar(dia);
+                        }
+            
         }
         /*Ahora inserto la nueva transformacion al proyecto*/
 
