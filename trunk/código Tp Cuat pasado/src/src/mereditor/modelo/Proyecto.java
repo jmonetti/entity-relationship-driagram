@@ -243,7 +243,7 @@ Diagrama ent =      (Diagrama) it.next();
                     
 		/*return this.componentes.containsKey(id);
                 this.componentes.*/
-        return dia;
+        return null;
                 
 	}
 
@@ -396,9 +396,11 @@ Diagrama ent =      (Diagrama) it.next();
 	public Observacion validar() {
 		Observacion observacion = super.validar();
 		
-		for (Diagrama diagrama : this.getDiagramas())
-			observacion.addObservacion(diagrama.validar());
-
+		for (Diagrama diagrama : this.getDiagramas()){
+			if(!diagrama.esLogico())
+				observacion.addObservacion(diagrama.validar());
+		}
+		
 		if (observacion.isEmpty())
 			this.validacion.setEstado(EstadoValidacion.VALIDADO);
 		else {

@@ -47,7 +47,7 @@ public class Transformacion {
 	    	DiagramaControl dLogico = new DiagramaControl(proyecto);
 	    	dLogico.setLogico(true);
 	    	
-	    	dLogico = transformarAtributosTipo1(diagramaDER, dLogico,proyecto);
+	    	dLogico = transformarAtributosTipo3(diagramaDER, dLogico,proyecto);
 	    	
 	    	
 	    	dLogico.setNombre("DiagramaLogico-" + diagramaDER.getNombre());
@@ -308,6 +308,22 @@ public class Transformacion {
 		
 		return false;
 	}
+	
+	
+	private boolean esHijo(Entidad entidad, Proyecto proyecto) {
+		
+		for ( Jerarquia j : proyecto.getJerarquias()){
+			
+			for(Entidad hijo : j.getDerivadas()){
+				if(hijo.getId().equals(entidad.getId()))
+					return true;
+			}
+			
+			
+		}
+		
+		return false;
+	}
 
 	private EntidadControl agregarAtributosJerarquia(EntidadControl entidadNew, Diagrama diagramaDER, Entidad entidad,Proyecto proyecto) {
 		
@@ -504,112 +520,249 @@ private DiagramaControl transformarAtributosTipo1(Diagrama diagramaDER, Diagrama
 
 private DiagramaControl transformarAtributosTipo3(Diagrama diagramaDER, DiagramaControl dLogico,Proyecto proyecto) {
 	
-	//obtengo todas las entidades y chequeo si tiene atributos Compuestos
-	EntidadControl entidadNew;
-			
-	Set<Entidad> entidades = diagramaDER.getEntidades(false);
-	// Recorro todas las entidades para encontrar sus atributos polivalentes
-	for( Entidad entidad : entidades){
-		
-		entidadNew = new EntidadControl(entidad);
-		entidadNew.setLogico(true);
-		
-		for ( Atributo atributo : entidad.getAtributos()){
-			
-			Collection<Atributo> atributosComp = atributo.getAtributos();
-			
-			if ( atributosComp != null && !atributosComp.isEmpty()){
-				//Es Compuesto -> Cada atributo compuesto de un componente pasa a ser un un 
-				//                atributo simple de la nueva entidad que contiene al compuesto 
+			//**********
+			//Variable para guardar todas las entidades que sean hijas en una jerarquia 
+	    	List<Entidad> entidadesHijas = new ArrayList<Entidad>();
+			//variable para guardar un mapa con Id de la entidad del DER que mapee con la entidad del logico
+	    	HashMap<String,String> mapaEntidades = new HashMap<String,String>();
+	    	//**************
+	    	
+			//obtengo todas las entidades y chequeo si tiene atributos Compuestos
+			EntidadControl entidadNew;
+					
+			Set<Entidad> entidades = diagramaDER.getEntidades(false);
+			// Recorro todas las entidades para encontrar sus atributos polivalentes
+			for( Entidad entidad : entidades){
 				
-				EntidadControl entidadComp = new EntidadControl(atributo.getNombre());
-				entidadComp.setLogico(true);
+				entidadNew = new EntidadControl(entidad);
+				entidadNew.setLogico(true);
 				
-				for ( Atributo at : atributosComp){
-					AtributoControl atributoCopia = new AtributoControl(at);
-					atributoCopia.setLogico(true);
-					entidadComp.addAtributo(atributoCopia);	
-					//proyecto.agregarSoloAlProyecto(atributoCopia);
-					//dLogico.agregar(atributoCopia);
+				for ( Atributo atributo : entidad.getAtributos()){
+					
+					Collection<Atributo> atributosComp = atributo.getAtributos();
+					
+					if ( atributosComp != null && !atributosComp.isEmpty()){
+						//Es Compuesto -> Cada atributo compuesto de un componente pasa a ser un un 
+						//                atributo simple de la nueva entidad que contiene al compuesto 
+						
+						EntidadControl entidadComp = new EntidadControl(atributo.getNombre());
+						entidadComp.setLogico(true);
+						
+						for ( Atributo at : atributosComp){
+							AtributoControl atributoCopia = new AtributoControl(at);
+							atributoCopia.setLogico(true);
+							entidadComp.addAtributo(atributoCopia);	
+							//proyecto.agregarSoloAlProyecto(atributoCopia);
+							//dLogico.agregar(atributoCopia);
+						}
+						
+						RelacionControl relacionCopia = new RelacionControl("RelacionCompuesta"+ atributo.getNombre());
+						relacionCopia.setLogico(true);
+						
+						EntidadRelacion er1 = relacionCopia.new EntidadRelacion(relacionCopia);
+						er1.setCardinalidadMaxima("1");
+						er1.setCardinalidadMinima("1");
+						er1.setEntidad(entidadNew);
+						er1.setRol("");
+						
+						EntidadRelacion er2 = relacionCopia.new EntidadRelacion(relacionCopia);
+						er2.setCardinalidadMaxima(atributo.getCardinalidadMaxima());
+						er2.setCardinalidadMinima(atributo.getCardinalidadMinima());
+						er2.setEntidad(entidadComp);
+						er2.setRol("");
+						
+						relacionCopia.addParticipante(er1);
+						relacionCopia.addParticipante(er2);
+						
+						//entidadComp.addRelacion(relacionCopia);
+						//entidadNew.addRelacion(relacionCopia);
+						
+						proyecto.agregarSoloAlProyecto(relacionCopia);
+						dLogico.agregar(relacionCopia);
+						
+						//Agrego la nueva entidad creada a partir del tributo compuesto al diagrama
+						dLogico.agregar(entidadComp);
+						proyecto.agregarSoloAlProyecto(entidadComp);
+						
+					} else if ( !atributo.getCardinalidadMinima().equals("1") || !atributo.getCardinalidadMaxima().equals("1")){
+						///Es polivalente -> transformo a una entidad
+						
+						EntidadControl entidadComp = new EntidadControl(atributo.getNombre());
+						entidadComp.setLogico(true);
+						
+						RelacionControl relacionCopia = new RelacionControl("RelacionPolivalente"+ atributo.getNombre());
+						relacionCopia.setLogico(true);
+						
+						EntidadRelacion er1 = relacionCopia.new EntidadRelacion(relacionCopia);
+						er1.setCardinalidadMaxima("1");
+						er1.setCardinalidadMinima("1");
+						er1.setEntidad(entidadNew);
+						er1.setRol("");
+						
+						EntidadRelacion er2 = relacionCopia.new EntidadRelacion(relacionCopia);
+						er2.setCardinalidadMaxima(atributo.getCardinalidadMaxima());
+						er2.setCardinalidadMinima(atributo.getCardinalidadMinima());
+						er2.setEntidad(entidadComp);
+						er2.setRol("");
+						
+						relacionCopia.addParticipante(er1);
+						relacionCopia.addParticipante(er2);
+						
+						//Agrego la nueva entidad creada a partir del tributo compuesto al diagrama
+						dLogico.agregar(entidadComp);
+						dLogico.agregar(relacionCopia);
+						proyecto.agregarSoloAlProyecto(entidadComp);
+						proyecto.agregarSoloAlProyecto(relacionCopia);
+						
+						
+					} else {
+						// no es ni compuesto ni polivalente. Todo Piola.
+						 AtributoControl aux = new AtributoControl(atributo);
+						 aux.setLogico(true);
+						 
+						entidadNew.addAtributo(aux);
+					}
 				}
 				
-				RelacionControl relacionCopia = new RelacionControl("RelacionCompuesta"+ atributo.getNombre());
-				relacionCopia.setLogico(true);
-				
-				EntidadRelacion er1 = relacionCopia.new EntidadRelacion(relacionCopia);
-				er1.setCardinalidadMaxima("1");
-				er1.setCardinalidadMinima("1");
-				er1.setEntidad(entidadNew);
-				er1.setRol("");
-				
-				EntidadRelacion er2 = relacionCopia.new EntidadRelacion(relacionCopia);
-				er2.setCardinalidadMaxima(atributo.getCardinalidadMaxima());
-				er2.setCardinalidadMinima(atributo.getCardinalidadMinima());
-				er2.setEntidad(entidadComp);
-				er2.setRol("");
-				
-				relacionCopia.addParticipante(er1);
-				relacionCopia.addParticipante(er2);
-				
-				//entidadComp.addRelacion(relacionCopia);
-				//entidadNew.addRelacion(relacionCopia);
-				
-				proyecto.agregarSoloAlProyecto(relacionCopia);
-				dLogico.agregar(relacionCopia);
-				
-				//Agrego la nueva entidad creada a partir del tributo compuesto al diagrama
-				dLogico.agregar(entidadComp);
-				proyecto.agregarSoloAlProyecto(entidadComp);
-				
-			} else if ( !atributo.getCardinalidadMinima().equals("1") || !atributo.getCardinalidadMaxima().equals("1")){
-				///Es polivalente -> transformo a una entidad
-				
-				EntidadControl entidadComp = new EntidadControl(atributo.getNombre());
-				entidadComp.setLogico(true);
-				
-				RelacionControl relacionCopia = new RelacionControl("RelacionPolivalente"+ atributo.getNombre());
-				relacionCopia.setLogico(true);
-				
-				EntidadRelacion er1 = relacionCopia.new EntidadRelacion(relacionCopia);
-				er1.setCardinalidadMaxima("1");
-				er1.setCardinalidadMinima("1");
-				er1.setEntidad(entidadNew);
-				er1.setRol("");
-				
-				EntidadRelacion er2 = relacionCopia.new EntidadRelacion(relacionCopia);
-				er2.setCardinalidadMaxima(atributo.getCardinalidadMaxima());
-				er2.setCardinalidadMinima(atributo.getCardinalidadMinima());
-				er2.setEntidad(entidadComp);
-				er2.setRol("");
-				
-				relacionCopia.addParticipante(er1);
-				relacionCopia.addParticipante(er2);
-				
-				
-				
-				//Agrego la nueva entidad creada a partir del tributo compuesto al diagrama
-				dLogico.agregar(entidadComp);
-				dLogico.agregar(relacionCopia);
-				proyecto.agregarSoloAlProyecto(entidadComp);
-				proyecto.agregarSoloAlProyecto(relacionCopia);
-				
-			} else {
-				// no es ni compuesto ni polivalente. Todo Piola.
-				 AtributoControl aux = new AtributoControl(atributo);
-				 aux.setLogico(true);
-				 
-				entidadNew.addAtributo(aux);
+				//Si es una entidad Hija lo agrego solamente a entidadesHijas dado que no van a ir en el logico
+				if ( !esHijo(entidad,proyecto)){
+					dLogico.agregar(entidadNew);
+					proyecto.agregarSoloAlProyecto(entidadNew);
+				}
+				else {
+					entidadesHijas.add(entidadNew);
+				}
+				//Agrego al mapa de ids  el id DER mapeando con el idLogico
+				mapaEntidades.put(entidad.getId(), entidadNew.getId());
 			}
-		}
-		
-		//Agrego atributos en caso de jerarquia
-		entidadNew = agregarAtributosJerarquia(entidadNew, diagramaDER, entidad, proyecto);
-		
-		dLogico.agregar(entidadNew);
-		proyecto.agregarSoloAlProyecto(entidadNew);
-	}
-	
-	
-	return dLogico;
+			
+			/* Agrego Relaciones */
+			for ( Relacion relacion : diagramaDER.getRelaciones(false)){
+				
+				//Creo una nueva relacion
+				RelacionControl relacionCopia = new RelacionControl("RelacionPolivalente"+ relacion.getNombre());
+				relacionCopia.setLogico(true);
+				
+				//recorro todos los participantes de la relacion
+				for(EntidadRelacion er : relacion.getParticipantes()){
+					
+					// Si es hijo, le voy a agregar la relacion al padre
+					if(esHijo(er.getEntidad(), proyecto)){
+						
+						//obtengo el padre
+						Entidad pad = null;
+						for ( Jerarquia j : proyecto.getJerarquias() ){
+							boolean end = false;
+							for(Entidad h : j.getDerivadas()){
+								if(h.getId().equals(mapaEntidades.get(er.getEntidad().getId()))){
+									pad = j.getGenerica();
+									//obtengo el padre logico
+									Entidad padreLogico = null;
+									for(Entidad ehl : dLogico.getEntidades(false)){
+										if ( ehl.getId().equals(mapaEntidades.get(pad.getId()))){
+											padreLogico = ehl;
+											pad = padreLogico;
+											break;
+										}
+									}
+									end = true;
+									break;
+								}
+									
+							}
+							if(end) 
+								break;
+						}
+						
+						//Agrego al padre a la relacion con cardinalidad minoma = 0
+						EntidadRelacion er1 = relacionCopia.new EntidadRelacion(relacionCopia);
+						er1.setCardinalidadMaxima(er.getCardinalidadMaxima());
+						er1.setCardinalidadMinima("0");
+						er1.setEntidad(pad);
+						er1.setRol(er.getRol());
+						
+						relacionCopia.addParticipante(er1);
+						
+					}
+					//Si es padre
+					else {
+						//obtengo el padre logico
+						Entidad padreLogico = null;
+						for(Entidad ehl : dLogico.getEntidades(false)){
+							if ( ehl.getId().equals(mapaEntidades.get(er.getEntidad().getId()))){
+								padreLogico = ehl;
+								break;
+							}
+						}
+												
+						EntidadRelacion er1 = relacionCopia.new EntidadRelacion(relacionCopia);
+						er1.setCardinalidadMaxima(er.getCardinalidadMaxima());
+						er1.setCardinalidadMinima(er.getCardinalidadMinima());
+						er1.setEntidad(padreLogico);
+						er1.setRol(er.getRol());
+												
+						relacionCopia.addParticipante(er1);
+					}
+				}
+				
+				proyecto.agregarSoloAlProyecto(relacionCopia);
+				dLogico.agregar(relacionCopia);
+			}
+			
+			/* Agrego Atributos de los hijos al padre */
+			for( Entidad eHija : entidadesHijas){
+				
+				//obtengo el padre
+				Entidad pad = null;
+				for ( Jerarquia j : proyecto.getJerarquias() ){
+					boolean endi = false;
+					for(Entidad h : j.getDerivadas()){
+						if(mapaEntidades.get(h.getId()).equals(eHija.getId())){
+							pad = j.getGenerica();//TODO
+							
+							//obtengo el padre logico
+							Entidad padreLogico = null;
+							for(Entidad ehl : dLogico.getEntidades(false)){
+								if ( ehl.getId().equals(mapaEntidades.get(pad.getId()))){
+									padreLogico = ehl;
+									pad = padreLogico;
+									break;
+								}
+							}
+							
+							endi = true;
+							break;
+						}
+							
+					}
+					if(endi) 
+						break;
+				}
+				
+				for(Atributo atributo : eHija.getAtributos()){
+					
+					boolean agrego = true;
+					for(Atributo attPad : pad.getAtributos()){
+						if(attPad.getNombre().equals(atributo.getNombre())){
+							agrego = false;
+							break;
+						}
+					}
+					
+					if(!agrego)
+						continue;
+					
+					AtributoControl aux = new AtributoControl(atributo);
+					aux.setLogico(true);
+					 
+					pad.addAtributo(aux);
+				}
+					
+				
+			}
+			
+			
+			
+			return dLogico;
 }
 }
