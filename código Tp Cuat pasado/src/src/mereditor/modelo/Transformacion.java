@@ -654,7 +654,7 @@ private DiagramaControl transformarAtributosTipo3(Diagrama diagramaDER, Diagrama
 						for ( Jerarquia j : proyecto.getJerarquias() ){
 							boolean end = false;
 							for(Entidad h : j.getDerivadas()){
-								if(h.getId().equals(mapaEntidades.get(er.getEntidad().getId()))){
+								if(h.getId().equals(er.getEntidad().getId())){
 									pad = j.getGenerica();
 									//obtengo el padre logico
 									Entidad padreLogico = null;
@@ -686,11 +686,11 @@ private DiagramaControl transformarAtributosTipo3(Diagrama diagramaDER, Diagrama
 					}
 					//Si es padre
 					else {
-						//obtengo el padre logico
-						Entidad padreLogico = null;
+						//obtengo entidad logica
+						Entidad entLogico = null;
 						for(Entidad ehl : dLogico.getEntidades(false)){
 							if ( ehl.getId().equals(mapaEntidades.get(er.getEntidad().getId()))){
-								padreLogico = ehl;
+								entLogico = ehl;
 								break;
 							}
 						}
@@ -698,7 +698,7 @@ private DiagramaControl transformarAtributosTipo3(Diagrama diagramaDER, Diagrama
 						EntidadRelacion er1 = relacionCopia.new EntidadRelacion(relacionCopia);
 						er1.setCardinalidadMaxima(er.getCardinalidadMaxima());
 						er1.setCardinalidadMinima(er.getCardinalidadMinima());
-						er1.setEntidad(padreLogico);
+						er1.setEntidad(entLogico);
 						er1.setRol(er.getRol());
 												
 						relacionCopia.addParticipante(er1);
