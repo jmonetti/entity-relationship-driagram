@@ -146,19 +146,6 @@ public class MenuBuilder implements Observer {
 		/*Agregado para empezar a poner los nuevos comandos*/
 
 		menuItem = new MenuItem(menuBar, SWT.CASCADE);
-		menuItem.setText("Diagrama L�gico");
-
-		menu = new Menu(principal.getShell(), SWT.DROP_DOWN);
-		menuItem.setMenu(menu);
-
-		menuItem = new MenuItem(menu, SWT.PUSH);
-		menuItem.setText("&Obtener Diagrama L�gico");
-		menuItem.addSelectionListener(AccionesProvider.obtenerDiagramaLogico);
-		proyectoItems.add(menuItem);
-
-
-
-		menuItem = new MenuItem(menuBar, SWT.CASCADE);
 		menuItem.setText("Opciones");
 
 		menu = new Menu(principal.getShell(), SWT.DROP_DOWN);
@@ -167,6 +154,18 @@ public class MenuBuilder implements Observer {
 		menuItem = new MenuItem(menu, SWT.PUSH);
 		menuItem.setText("&Pasar Diagrama a modelo de tablas...");
 		menuItem.addSelectionListener(AccionesProvider.pasajeLogico);
+                
+                
+                menuItem = new MenuItem(menu, SWT.PUSH);
+		menuItem.setText("&Pasar Diagrama a modelo 1...");
+		//menuItem.addSelectionListener(AccionesProvider.pasajeLogico);
+                
+                
+                   
+                menuItem = new MenuItem(menu, SWT.PUSH);
+		menuItem.setText("&Pasar Diagrama a modelo 2...");
+		//menuItem.addSelectionListener(AccionesProvider.pasajeLogico);
+
 
 		proyectoItems.add(menuItem);
 
