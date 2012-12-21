@@ -152,7 +152,7 @@ public class ParserXmlTest extends TestCase {
 //	}
 
 	public void testCargarProyecto() throws Exception {
-		Proyecto proyecto = this.parser.parsear();
+	/*	Proyecto proyecto = this.parser.parsear();
 		for(Diagrama diagrama : proyecto.getDiagramas()){
 			Diagrama trans = Transformacion.getInstance().tranformarALogico(diagrama, proyecto);
 			trans.setLogico(true);
@@ -164,7 +164,7 @@ public class ParserXmlTest extends TestCase {
 		System.out.println(doc.toString());
 		assertTrue(doc != null);
 		assertTrue(proyecto != null);
-		assertTrue(proyecto.getComponentes().size() > 0);
+		assertTrue(proyecto.getComponentes().size() > 0);*/
 	}
 	
 //	public void testCargarProyectoConvertirXml() throws Exception {

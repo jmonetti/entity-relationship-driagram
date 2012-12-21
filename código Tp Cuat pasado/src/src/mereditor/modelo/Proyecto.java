@@ -227,23 +227,22 @@ public class Proyecto extends ComponenteNombre implements ProyectoProxy {
         
         
         /*indica si en el proyecto hay un diagrama con ese nombre y en caso que sea cierto devuelve ese diagrama*/
-        public Diagrama  contiene_diagrama(String nombre) {
+        public DiagramaControl  contiene_diagrama(String nombre) {
             
             Iterator it = this.getDiagramas().iterator();
-            Diagrama dia=null;
+            DiagramaControl dia=null;
             
 	        while(it.hasNext()&&dia==null) {
-Diagrama ent =      (Diagrama) it.next();
+DiagramaControl ent =      (DiagramaControl) it.next();
 	            
-                    if (ent.getNombre() != null &&ent.getNombre().equals(nombre)) 
+                    if (ent.getNombre() != null &&ent.getNombre().equals(nombre) && ent.esLogico()) 
                        dia=ent;
                     
 	         
 	        }
-                    
-		/*return this.componentes.containsKey(id);
-                this.componentes.*/
-        return null;
+          if(dia!=null)      
+          System.out.println("Se encontro un dia igual llamado= "+dia.getNombre());
+        return dia;
                 
 	}
 

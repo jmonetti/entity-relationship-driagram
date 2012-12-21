@@ -309,24 +309,35 @@ public class Principal extends Observable implements FigureListener {
                 
         DiagramaControl diagramaLogico =   Transformacion.getInstance().tranformarALogico(this.proyecto.getDiagramaActual(), proyecto, tipo);
 
-        Diagrama dia=this.proyecto.contiene_diagrama(diagramaLogico.getNombre());
+        DiagramaControl dia=this.proyecto.contiene_diagrama(diagramaLogico.getNombre());
+        
+       
         if(dia!=null){
-            System.out.println("Se elimina");
-            proyecto.eliminar(dia);
+                System.out.println("Se elimina");
+            
+                this.proyecto.eliminar(dia);
+                
         }
-        /*Ahora inserto la nueva transformacion al proyecto*/
-
-        proyecto.agregarSoloAlProyecto(diagramaLogico);
-
-        this.proyecto.setDiagramaActual(diagramaLogico.getId());
+                /*Ahora inserto la nueva transformacion al proyecto*/
+                diagramaLogico.setLogico(true);
+                proyecto.agregarSoloAlProyecto(diagramaLogico);
+     TreeManager.agregarADiagramaActual(diagramaLogico);
+                 this.proyecto.setDiagramaActual(diagramaLogico.getId()); 
+               
+                    
+        
+       
         // Notificar a la toolbar que hay un proyecto abierto.
             this.setChanged();
             this.notifyObservers();
          
 
         this.actualizarVista();
-        TreeManager.agregarADiagramaActual(diagramaLogico);
+     
         this.modificado(true);
+        
+  
+                
 
         System.out.println("Se pasa al logico");
 	}else  System.out.println("El diagrama actual no es valido");
@@ -376,35 +387,29 @@ public class Principal extends Observable implements FigureListener {
             String nombre_macheo="DiagramaLogico-"+dia.getNombre();
             System.out.println("Nombre macheo logico= "+nombre_macheo);
             
-	        while(it.hasNext()&& !encontrado) {
+	        while(it.hasNext()&&!encontrado) {
 
                 logico = (Diagrama) it.next();
               
-                 if(logico.getNombre().equals(nombre_macheo)){
-                        System.out.println("logico encontrado= "+ logico.getNombre());
-                encontrado=true;   
-                
-                     proyecto.agregarSoloAlProyecto(logico);
-
-        this.proyecto.setDiagramaActual(logico.getId());
-        // Notificar a la toolbar que hay un proyecto abierto.
+                    if(logico.getNombre().equals(nombre_macheo)){
+                           System.out.println("logico encontrado= "+ logico.getNombre());
+                           encontrado=true;   
+                           proyecto.agregarSoloAlProyecto(logico);
+                           //   this.proyecto.setDiagramaActual(logico.getId());
+                              // Notificar a la toolbar que hay un proyecto abierto.
+                            TreeManager.agregarADiagramaActualLogico(logico);
             this.setChanged();
             this.notifyObservers();
-         
-
-        this.actualizarVista();
-        TreeManager.agregarADiagramaActual(logico);
+                   this.actualizarVista();
+       
         this.modificado(true);
-                
-                
-                
-                        
-                 }
-                     
+         
+                    }
             
-		
-                 
-        }
+                 }
+      
+
+ 
                 return logico;
            }
         
