@@ -147,6 +147,43 @@ public class TreeManager {
 
 		
 	}
+
+        
+        
+   
+	/**
+	 * Agregado de diagrama no principal y sus hijos.
+	 * 
+	 * @param diagrama
+	 * @param padre
+	 */
+	private static void agregadoLogico(Diagrama diagrama, TreeItem padre) {
+		TreeItem item = new TreeItem(padre, SWT.NULL);
+		item.setText(diagrama.getNombre());
+		item.setData(diagrama);
+		String nombreIcono = ((Control<?>) diagrama).getNombreIcono();
+		item.setImage(Principal.getIcono(nombreIcono));
+        
+		for (Diagrama diagramaHijo : diagrama.getDiagramas()){
+			agregar(diagramaHijo, item);
+                  if(Principal.getInstance().tienelogico(diagramaHijo)!=null){
+                         
+                        System.out.println("Se agrego un logico a: "+diagramaHijo.getNombre());
+                        }
+                            
+                    
+                }        
+
+		for (Componente componente : diagrama.getEntidades(false))
+			agregar(componente, item);
+
+		for (Componente componente : diagrama.getRelaciones(false))
+			agregar(componente, item);
+
+		for (Componente componente : diagrama.getJerarquias(false))
+			agregar(componente, item);
+	}
+     
         
 
 	/**
@@ -209,6 +246,10 @@ public class TreeManager {
 
 	public static void agregarADiagramaActual(Diagrama nuevoDiagrama) {
 		agregar(nuevoDiagrama, diagramaActivo);
+	}
+        
+        public static void agregarADiagramaActualLogico(Diagrama nuevoDiagrama) {
+		agregadoLogico(nuevoDiagrama, diagramaActivo);
 	}
 
 	public static void agregarADiagramaActual(Componente nuevoComponente) {

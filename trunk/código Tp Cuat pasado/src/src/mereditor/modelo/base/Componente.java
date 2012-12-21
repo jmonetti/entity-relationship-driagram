@@ -72,6 +72,10 @@ public abstract class Componente implements Comparable<Componente>, Validable {
 	public String getId() {
 		return id;
 	}
+        
+        public void setId(String id) {
+		this.id=id;
+	}
 
 	/**
 	 * Obtiene el padre de este componente si tiene uno sólo. En el caso de
