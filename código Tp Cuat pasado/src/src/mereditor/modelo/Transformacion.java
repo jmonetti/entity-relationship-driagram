@@ -190,7 +190,7 @@ public class Transformacion {
 		for ( Relacion relacion : diagramaDER.getRelaciones(false)){
 			
 			//Creo una nueva relacion
-			RelacionControl relacionCopia = new RelacionControl("RelacionPolivalente"+ relacion.getNombre());
+			RelacionControl relacionCopia = new RelacionControl("Polivalente"+ relacion.getNombre());
 			relacionCopia.setLogico(true);
 			
 			//recorro todos los participantes de la relacion
@@ -219,7 +219,7 @@ public class Transformacion {
 						//obtengo el hijo logico
 						Entidad hijoLogico = null;
 						for(Entidad ehl : dLogico.getEntidades(false)){
-							if ( ehl.getId().equals(mapaEntidades.get(hijoDer.getId()))){
+							if ( mapaEntidades.get(hijoDer.getId()).equals(ehl.getId())){
 								hijoLogico = ehl;
 								break;
 							}
@@ -241,7 +241,7 @@ public class Transformacion {
 					//obtengo el hijo logico
 					Entidad hijoLogico = null;
 					for(Entidad ehl : dLogico.getEntidades(false)){
-						if ( ehl.getId().equals(mapaEntidades.get(er.getEntidad().getId()))){
+						if ( mapaEntidades.get(er.getEntidad().getId()).equals(ehl.getId())){
 							hijoLogico = ehl;
 							break;
 						}
@@ -269,7 +269,7 @@ public class Transformacion {
 			
 			for ( Jerarquia j : proyecto.getJerarquias() ){
 			
-				if(j.getGenerica().getId().equals(ePadre.getId())){
+				if(mapaEntidades.get(j.getGenerica().getId()).equals(ePadre.getId())){
 					
 					for(Entidad e : j.getDerivadas()){
 						hijos.add(e);
@@ -284,7 +284,7 @@ public class Transformacion {
 				//obtengo el hijo logico
 				Entidad hijoLogico = null;
 				for(Entidad ehl : dLogico.getEntidades(false)){
-					if ( ehl.getId().equals(mapaEntidades.get(hijoDer.getId()))){
+					if ( mapaEntidades.get(hijoDer.getId()).equals(ehl.getId())){
 						hijoLogico = ehl;
 						
 						for(Atributo atributo : ePadre.getAtributos()){
