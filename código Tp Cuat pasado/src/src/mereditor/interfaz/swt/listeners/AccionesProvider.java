@@ -157,14 +157,35 @@ public class AccionesProvider {
 		}
 	};
         
-          /**
+	/**
 	 * Pasar diagrama  actual al modelo de tablas
 	 */
 	public static final SelectionListener pasajeLogico = new SelectionAdapter() {
 		@Override
 		public void widgetSelected(SelectionEvent e) {
 			//TODO si se agrega un diagrama logico hay que pasar TRUE por parametro
-			principal().pasajeLogicoDiagrama();
+			principal().pasajeLogicoDiagrama(1);
+		}
+	};
+	
+	/**
+	 * Pasar diagrama  actual al modelo de tablas
+	 */
+	public static final SelectionListener pasajeLogicoEliminandoDerivadas = new SelectionAdapter() {
+		@Override
+		public void widgetSelected(SelectionEvent e) {
+			principal().pasajeLogicoDiagrama(2);
+		}
+	};
+	
+	/**
+	 * Pasar diagrama  actual al modelo de tablas
+	 */
+	public static final SelectionListener pasajeLogicoCreandoRelaciones = new SelectionAdapter() {
+		@Override
+		public void widgetSelected(SelectionEvent e) {
+			//TODO si se agrega un diagrama logico hay que pasar TRUE por parametro
+			principal().pasajeLogicoDiagrama(3);
 		}
 	};
 

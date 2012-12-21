@@ -74,7 +74,7 @@ public class SeleccionarComponenteDialog<T extends Componente> extends Dialog {
 	@Override
 	protected void okPressed() {
 		if (this.combo.getSelectionIndex() == -1) {
-			this.principal.error("No seleccionó ninguna opción.");
+			this.principal.error("No seleccionado ninguna opcion.");
 		} else {
 			String nombre = combo.getText();
 			componente = this.componentes.get(this.nombres.indexOf(nombre));

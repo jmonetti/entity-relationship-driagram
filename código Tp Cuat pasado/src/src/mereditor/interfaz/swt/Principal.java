@@ -300,31 +300,19 @@ public class Principal extends Observable implements FigureListener {
         	/**
 	 * Pasaje del modelo actual a logico
 	 */
-	public void pasajeLogicoDiagrama() {             
+	public void pasajeLogicoDiagrama(int tipo) {             
             
             /*Me fijo si ya existia una transformacion de ese diagrama en el proyecto*/
         //    this.proyecto.getDiagramas().
             /* Valido el diagrama que se quiere pasar a logico por ahora le pongo != null ya siempre tira q no es valido*/
       if(this.proyecto.getDiagramaActual().validar()!=null){
                 
-        DiagramaControl diagramaLogico =   Transformacion.getInstance().tranformarALogico(this.proyecto.getDiagramaActual(), proyecto);
+        DiagramaControl diagramaLogico =   Transformacion.getInstance().tranformarALogico(this.proyecto.getDiagramaActual(), proyecto, tipo);
 
         Diagrama dia=this.proyecto.contiene_diagrama(diagramaLogico.getNombre());
         if(dia!=null){
             System.out.println("Se elimina");
-          
-            
-        
-                            
-                           TreeManager.getItemDia(dia.getNombre());
-			
-
-				Principal.getInstance().actualizarVista();
-				
-            
-              proyecto.eliminar(dia);
-                        
-            
+            proyecto.eliminar(dia);
         }
         /*Ahora inserto la nueva transformacion al proyecto*/
 
