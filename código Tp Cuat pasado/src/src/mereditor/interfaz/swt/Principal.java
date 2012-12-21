@@ -315,7 +315,7 @@ public class Principal extends Observable implements FigureListener {
         if(dia!=null){
                 System.out.println("Se elimina");
             
-          //      this.proyecto.eliminar(dia);
+                this.proyecto.eliminar(dia);
                 
         }
                 /*Ahora inserto la nueva transformacion al proyecto*/
@@ -395,10 +395,10 @@ public class Principal extends Observable implements FigureListener {
                            System.out.println("logico encontrado= "+ logico.getNombre());
                            
                          
-                           //   this.proyecto.setDiagramaActual(logico.getId());
+                              this.proyecto.setDiagramaActual(logico.getId());
                               // Notificar a la toolbar que hay un proyecto abierto.
            
-                      this.proyecto.setDiagramaActual(dia.getId());
+                    //  this.proyecto.setDiagramaActual(dia.getId());
                       proyecto.agregarSoloAlProyecto(logico);
                             TreeManager.agregarADiagramaActual(logico);
             this.setChanged();
