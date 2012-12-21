@@ -161,10 +161,14 @@ public class TreeManager {
 		item.setData(diagrama);
 		String nombreIcono = ((Control<?>) diagrama).getNombreIcono();
 		item.setImage(Principal.getIcono(nombreIcono));
-                 diagramaActivo = item;
+           diagramaActivo = item;
 		for (Diagrama diagramaHijo : diagrama.getDiagramas()){
 			agregar(diagramaHijo, item);
-                    
+                  if(Principal.getInstance().tienelogico(diagramaHijo)!=null){
+                         
+                        System.out.println("Se agrego un logico a: "+diagramaHijo.getNombre());
+                        }
+                            
                     
                 }        
 
