@@ -152,21 +152,21 @@ public class MenuBuilder implements Observer {
 		menuItem.setMenu(menu);
 
 		menuItem = new MenuItem(menu, SWT.PUSH);
-		menuItem.setText("&Pasar Diagrama a modelo de tablas...");
+		menuItem.setText("&Pasar a Modelo Logico eliminando Entidades genericas.");
 		menuItem.addSelectionListener(AccionesProvider.pasajeLogico);
                 proyectoItems.add(menuItem);
                 
                 
                 menuItem = new MenuItem(menu, SWT.PUSH);
-		menuItem.setText("&Pasar Diagrama a modelo 1...");
-		//menuItem.addSelectionListener(AccionesProvider.pasajeLogico);
+		menuItem.setText("&Pasar a Modelo Logico eliminando Entidades derivadas.");
+		menuItem.addSelectionListener(AccionesProvider.pasajeLogicoEliminandoDerivadas);
                 proyectoItems.add(menuItem);
                 
                 
                    
                 menuItem = new MenuItem(menu, SWT.PUSH);
-		menuItem.setText("&Pasar Diagrama a modelo 2...");
-		//menuItem.addSelectionListener(AccionesProvider.pasajeLogico);
+		menuItem.setText("&Pasar a Modelo Logico creando relaciones para la jerarquia");
+		menuItem.addSelectionListener(AccionesProvider.pasajeLogicoCreandoRelaciones);
                 proyectoItems.add(menuItem);
 
 
