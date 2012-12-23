@@ -315,7 +315,7 @@ public class Principal extends Observable implements FigureListener {
         if(dia!=null){
                 System.out.println("Se elimina");
             
-                this.proyecto.eliminar(dia);
+           //     this.proyecto.eliminar(dia);
                 
         }
                 /*Ahora inserto la nueva transformacion al proyecto*/
