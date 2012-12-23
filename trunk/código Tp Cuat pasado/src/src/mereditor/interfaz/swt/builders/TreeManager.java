@@ -100,10 +100,10 @@ public class TreeManager {
                        
 			agregar(diagramaHijo, item);
                             
-                        if(Principal.getInstance().tienelogico(diagramaHijo)!=null){
+                  /*      if(Principal.getInstance().tienelogico(diagramaHijo)!=null){
                          
                         System.out.println("Se agrego un logico a: "+diagramaHijo.getNombre());
-                        }
+                        }*/
                         
                 }
 
@@ -136,15 +136,44 @@ public class TreeManager {
 		
 	}
         
-        public static  void getItemDia(String nombre_diagrama) {
+        public static  void agregar_logicos() {
             int cantidad;
         cantidad = tree.getItemCount();
+      System.out.println("Diagrama primer nivel:");
+      tree.getItem(0).getText();
+      int cant_items_2_nivel= tree.getItem(0).getItemCount();
+      System.out.println("Cant Item Seg nivel: "+  cant_items_2_nivel);
+      if(tree.getItem(0).getItemCount()>=1){
+      System.out.println("Items seg nivel:");
+        for(int i=0; i<cant_items_2_nivel;i++){
+      System.out.println("Elemento "+i+" : "+tree.getItem(0).getItem(i).getText());
+       }
+        
+       System.out.println("Diadramas seg nivel:");
+        for(int i=0; i<cant_items_2_nivel;i++){
+      //   TreeItem   tree.getItem(0).getItem(i);
+         	//TreeManager.diagramaActivo = diagramaActivo;
+   
+     Diagrama logico=Principal.getInstance().tienelogico1(tree.getItem(0).getItem(i).getText());
+     if(logico != null){
+         TreeManager.diagramaActivo = tree.getItem(0).getItem(i);
+     Principal.getInstance().agregoLogicoDiagrama(logico);
+             
+     }
       
- /*   for(int i=0; i<cantidad;i++){
-      System.out.println("Lista itemsooo: "+tree.getItem(0).getItem(0).dispose();
-   //     }
-		*/
-
+       }
+      
+      
+      }
+      
+      
+      
+  /*      
+    for(int i=0; i<cantidad;i++){
+      System.out.println("Lista itemsooo: "+tree.getItem(i).getText());
+       }
+		
+        */
 		
 	}
 
@@ -166,10 +195,10 @@ public class TreeManager {
         
 		for (Diagrama diagramaHijo : diagrama.getDiagramas()){
 			agregar(diagramaHijo, item);
-                  if(Principal.getInstance().tienelogico(diagramaHijo)!=null){
+                /*  if(Principal.getInstance().tienelogico(diagramaHijo)!=null){
                          
                         System.out.println("Se agrego un logico a: "+diagramaHijo.getNombre());
-                        }
+                        }*/
                             
                     
                 }        
@@ -201,10 +230,10 @@ public class TreeManager {
            diagramaActivo = item;
 		for (Diagrama diagramaHijo : diagrama.getDiagramas()){
 			agregar(diagramaHijo, item);
-                  if(Principal.getInstance().tienelogico(diagramaHijo)!=null){
+               /*   if(Principal.getInstance().tienelogico(diagramaHijo)!=null){
                          
                         System.out.println("Se agrego un logico a: "+diagramaHijo.getNombre());
-                        }
+                        }*/
                             
                     
                 }        
