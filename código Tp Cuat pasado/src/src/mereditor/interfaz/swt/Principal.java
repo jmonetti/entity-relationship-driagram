@@ -373,40 +373,30 @@ public class Principal extends Observable implements FigureListener {
 	}
 
         
-        
-        
-   public Diagrama tienelogico(Diagrama dia) {
+   public Diagrama tienelogico1(String dia) {
             
         
              
           
             boolean encontrado=false;
             Diagrama logico=null;
+            Diagrama dia1=null;
             Iterator it = this.proyecto.getDiagramas().iterator();
             
-            String nombre_macheo="DiagramaLogico-"+dia.getNombre();
+            String nombre_macheo="DiagramaLogico-"+dia;
             System.out.println("Nombre macheo logico= "+nombre_macheo);
             
 	        while(it.hasNext()) {
 
-                logico = (Diagrama) it.next();
+                dia1 = (Diagrama) it.next();
               
-                    if(logico.getNombre().equals(nombre_macheo)&&logico.esLogico()){
-                           System.out.println("logico encontrado= "+ logico.getNombre());
-                           
-                         
-                              this.proyecto.setDiagramaActual(logico.getId());
-                              // Notificar a la toolbar que hay un proyecto abierto.
-           
-                    //  this.proyecto.setDiagramaActual(dia.getId());
-                      proyecto.agregarSoloAlProyecto(logico);
-                            TreeManager.agregarADiagramaActual(logico);
-            this.setChanged();
-            this.notifyObservers();
-                   this.actualizarVista();
-       
-        this.modificado(true);
+                    if(dia1.getNombre()!=null&&dia1.getNombre().contains("Logico")&&dia1.getNombre().equals(nombre_macheo)){
+                           System.out.println("logico encontrado= "+ dia1.getNombre());
+                           logico=dia1;
                     }
+                           
+         
+                    
                 }
                     
             
@@ -414,8 +404,38 @@ public class Principal extends Observable implements FigureListener {
 
  
                 return logico;
-           }
+           }       
+   
+   
+           
+
+        	/**
+	 * Agrega un logico en el punto del dia activo
+	 */
+	public void agregoLogicoDiagrama(Diagrama diagramaLogico) {             
+         
+     
+            diagramaLogico.setLogico(true);
+            proyecto.agregarSoloAlProyecto(diagramaLogico);
+            TreeManager.agregarADiagramaActual(diagramaLogico);
+               
+               
+                    
         
+       
+        // Notificar a la toolbar que hay un proyecto abierto.
+            this.setChanged();
+            this.notifyObservers();
+         
+            this.actualizarVista();    
+            this.modificado(true);
+        
+  
+            System.out.println("Se agrego un logico en el item activo en el treemanagar");                
+
+}
+        
+
         
         
 	/**
@@ -429,6 +449,27 @@ public class Principal extends Observable implements FigureListener {
 		this.panelDiagrama.actualizar();
 		// Carga inicial del arbol.
 		TreeManager.cargar(this.proyecto);
+                 System.out.println("Diagramas logicos:");
+                 
+                 
+                 
+                 
+                   Iterator it = this.proyecto.getDiagramas().iterator();
+            Diagrama dia=null;
+                   
+	        while(it.hasNext()) {
+
+                dia = (Diagrama) it.next();
+              
+                    if(dia.getNombre()!=null&&dia.getNombre().contains("Logico")){
+                           System.out.println("dia logico cargado= "+ dia.getNombre());
+                           
+                     
+                            }
+                }
+                
+                
+                TreeManager.agregar_logicos();
 		
 		// Notificar a la toolbar que hay un proyecto abierto.
                 
