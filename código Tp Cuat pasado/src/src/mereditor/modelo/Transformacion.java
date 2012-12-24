@@ -13,6 +13,7 @@ import mereditor.control.AtributoControl;
 import mereditor.control.DiagramaControl;
 import mereditor.control.EntidadControl;
 import mereditor.control.RelacionControl;
+import mereditor.interfaz.swt.figuras.EntidadFigure;
 import mereditor.modelo.Relacion.EntidadRelacion;
  
 
@@ -60,7 +61,8 @@ public class Transformacion {
 	    	
 	    	dLogico.setNombre("DiagramaLogico-" + diagramaDER.getNombre());
 	    	i++;
-	    	    	
+	    	
+	    	diagramaDER.agregar(dLogico);	    	
 	    	return dLogico;
     	}
     	else return null;
@@ -157,6 +159,10 @@ public class Transformacion {
 					relacionCopia.addParticipante(er2);
 					
 					
+					
+					EntidadFigure figura = entidadComp.getFigura(diagramaDER.getId());
+					
+					figura.setBounds(figura.getBounds().getTranslated(300, 300));
 					
 					//Agrego la nueva entidad creada a partir del tributo compuesto al diagrama
 					dLogico.agregar(entidadComp);
