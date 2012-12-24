@@ -42,7 +42,9 @@ public class DiagramaXml extends DiagramaControl implements Xmlizable {
 		if (this.diagramas.size() > 0) {
 			Element diagramasElement = parser.agregarDiagramas(elemento);
 			for (Diagrama diagrama : this.diagramas) {
-				diagramasElement.appendChild(parser.convertirXmlizable(diagrama).toXml(parser));
+				if(!diagrama.esLogico()){
+					diagramasElement.appendChild(parser.convertirXmlizable(diagrama).toXml(parser));
+				}
 			}
 		}
 
@@ -92,7 +94,9 @@ public class DiagramaXml extends DiagramaControl implements Xmlizable {
 		if (this.diagramas.size() > 0) {
 			Element diagramasElement = parser.agregarDiagramas(elemento);
 			for (Diagrama diagrama : this.diagramas) {
+				
 				diagramasElement.appendChild(parser.convertirXmlizable(diagrama).toXml(parser));
+				
 			}
 		}
 
