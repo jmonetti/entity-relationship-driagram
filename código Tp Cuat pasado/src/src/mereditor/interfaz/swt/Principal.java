@@ -297,6 +297,23 @@ public class Principal extends Observable implements FigureListener {
 	}
         
         
+        
+        
+        /**
+	 * Elimina del arbol y los xml un logico q no es el ultimo generado
+	 * 
+	 * @throws Exception
+	 */
+	public void eliminarItem(Diagrama dia) {
+		
+            /* Le paso el nombre del diagrama que coincide con el text de un item para eliminarlo del arbol de items*/
+                 TreeManager.eliminarItem(dia.getNombre());
+                 this.proyecto.eliminar(dia);
+                 
+                 
+	}
+        
+        
         	/**
 	 * Pasaje del modelo actual a logico
 	 */
@@ -315,7 +332,7 @@ public class Principal extends Observable implements FigureListener {
         if(dia!=null){
                 System.out.println("Se elimina");
             
-           //     this.proyecto.eliminar(dia);
+               this.eliminarItem(dia);
                 
         }
                 /*Ahora inserto la nueva transformacion al proyecto*/

@@ -23,6 +23,7 @@ public class TreeManager {
 	private static CTabItem tab;
 	private static CTabFolder folder;
 	private static TreeItem diagramaActivo;
+        
       
 
 	public static Tree build(Composite composite) {
@@ -57,25 +58,19 @@ public class TreeManager {
 	 * 
 	 * @return
 	 */
-	public  static  void  eliminarItem() {
-      for(int i=0;i<tree.getItemCount();i++) {
-             TreeManager.tree.getItem(i).getData().toString();
-            }
-            /*
-	
-            	Componente componente = getComponente();
-			TreeItem current = getItem();
-			TreeItem parent = current.getParentItem();
-			if (parent != null) {
-				Diagrama diagrama = (Diagrama) parent.getData();
-				diagrama.eliminar(componente);
+	public  static  void  eliminarItem(String text) {
+              System.out.println("nombre dia a eliminar:"+ text); 
 
-				Principal.getInstance().actualizarVista();
-				current.dispose();
-			}
-		*/
-			
-	}
+  for(int i=0;i<diagramaActivo.getItemCount();i++) {
+         System.out.println( "dia act"+i+ "= "+diagramaActivo.getItem(i).getText());
+  if(diagramaActivo.getItem(i)!=null && diagramaActivo.getItem(i).getText().equals(text)){
+   System.out.println( "Se elimina el logico");   
+   diagramaActivo.getItem(i).dispose();
+  }
+
+  }
+ 
+        }
 
 	/**
 	 * Agregado del diagrama principal y sus hijos.
@@ -139,7 +134,24 @@ public class TreeManager {
         public static  void agregar_logicos() {
             int cantidad;
         cantidad = tree.getItemCount();
-      System.out.println("Diagrama primer nivel:");
+      System.out.println("Cant Diagramas primer nivel:"+ cantidad);
+      
+      
+     /* Si el raiz tiene logico lo verifico */
+       
+     Diagrama logico=Principal.getInstance().tienelogico1(tree.getItem(0).getText());
+     if(logico != null){
+         TreeManager.diagramaActivo = tree.getItem(0);
+     Principal.getInstance().agregoLogicoDiagrama(logico);
+             
+     }
+      
+       
+      
+      
+      
+      
+      
       tree.getItem(0).getText();
       int cant_items_2_nivel= tree.getItem(0).getItemCount();
       System.out.println("Cant Item Seg nivel: "+  cant_items_2_nivel);
@@ -154,7 +166,7 @@ public class TreeManager {
       //   TreeItem   tree.getItem(0).getItem(i);
          	//TreeManager.diagramaActivo = diagramaActivo;
    
-     Diagrama logico=Principal.getInstance().tienelogico1(tree.getItem(0).getItem(i).getText());
+     logico=Principal.getInstance().tienelogico1(tree.getItem(0).getItem(i).getText());
      if(logico != null){
          TreeManager.diagramaActivo = tree.getItem(0).getItem(i);
      Principal.getInstance().agregoLogicoDiagrama(logico);
