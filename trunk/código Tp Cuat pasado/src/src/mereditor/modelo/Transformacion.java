@@ -299,10 +299,21 @@ public class Transformacion {
 							 
 							 hijoLogico.addAtributo(aux);
 						}
+						// cambio todas las relaciones del padre a la entidad hijo
+						for(Relacion relacion : ePadre.getRelaciones()){
+							for(EntidadRelacion er : relacion.getParticipantes()){
+								if(er.getEntidad().getId().equals(ePadre.getId())){
+									er.setEntidad(ehl);
+								}
+							}													
+						}
+						
 						break;
 					}
 				}
 			}
+			
+
 		}
 		
 		
@@ -769,6 +780,15 @@ private DiagramaControl transformarAtributosTipo3(Diagrama diagramaDER, Diagrama
 			aux.setLogico(true);
 			 
 			pad.addAtributo(aux);
+		}
+		
+		// cambio todas las relaciones del hijo a la entidad padre
+		for(Relacion relacion : eHija.getRelaciones()){
+			for(EntidadRelacion er : relacion.getParticipantes()){
+				if(er.getEntidad().getId().equals(eHija.getId())){
+					er.setEntidad(pad);
+				}
+			}													
 		}
 			
 		
