@@ -332,7 +332,7 @@ public class Principal extends Observable implements FigureListener {
         if(dia!=null){
                 System.out.println("Se elimina");
             
-               this.eliminarItem(dia);
+         this.eliminarItem(dia);
                 
         }
                 /*Ahora inserto la nueva transformacion al proyecto*/
@@ -431,9 +431,32 @@ public class Principal extends Observable implements FigureListener {
 	 */
 	public void agregoLogicoDiagrama(Diagrama diagramaLogico) {             
          
-     
+
+            
             diagramaLogico.setLogico(true);
-            proyecto.agregarSoloAlProyecto(diagramaLogico);
+            
+            
+                  
+            
+                String nombreDerasociado=diagramaLogico.getNombre().replace("DiagramaLogico-","");     
+                Iterator it = this.proyecto.getDiagramas().iterator();
+                Diagrama dia=null;
+                boolean enc=false;
+	        while(it.hasNext()&&!enc) {
+
+                dia = (Diagrama) it.next();
+              
+                    if(dia.getNombre()!=null&&dia.getNombre().equals(nombreDerasociado)){
+                           System.out.println("se agrego a su der el cual es= "+ dia.getNombre());
+                          dia.agregar(diagramaLogico);
+                           enc=true;   
+                    }
+                }
+                
+            
+            
+            
+           proyecto.agregarSoloAlProyecto(diagramaLogico);
             TreeManager.agregarADiagramaActual(diagramaLogico);
                
                
