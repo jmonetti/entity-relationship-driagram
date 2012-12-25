@@ -61,7 +61,6 @@ public class Transformacion {
 	    	
 	    	dLogico.setNombre("DiagramaLogico-" + diagramaDER.getNombre());
 	    	i++;
-	    	
 	    	diagramaDER.agregar(dLogico);	    	
 	    	return dLogico;
     	}

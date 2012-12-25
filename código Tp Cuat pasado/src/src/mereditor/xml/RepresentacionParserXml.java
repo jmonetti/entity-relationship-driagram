@@ -148,11 +148,32 @@ class RepresentacionParserXml extends ParserXml {
 
 		this.generarDiagramaXml(diagramaElem, diagrama.getId(), diagrama.getComponentes());
 
-		// Recorrer todos los diagramas hijos del principal
+		// Recorrer todos los diagramas hijos del principal y nietos tambien
 		for (Diagrama diagramaHijo : diagrama.getDiagramas()) {
+                    /*verifico hijo del principal*/
 			if(diagramaHijo.esLogico()){
 				this.generarDiagramaXml(elemento, diagramaHijo);
 			}
+                    /*Verifico hijos del hijo actiu primer nivel*/    
+                    for (Diagrama diagramaHijodelHijo : diagramaHijo.getDiagramas()) {    
+                        if(diagramaHijodelHijo.esLogico()){
+				this.generarDiagramaXml(elemento, diagramaHijodelHijo);
+			}
+                    /*Verifico hijos del hijo del hijo*/    
+                    for (Diagrama diagramaHijodelHijodelHijo : diagramaHijodelHijo.getDiagramas()) {    
+                        if(diagramaHijodelHijodelHijo.esLogico()){
+				this.generarDiagramaXml(elemento, diagramaHijodelHijodelHijo);
+			}
+                        
+                    }        
+                        
+                        
+                        
+                        
+                    }    
+                    
+                   
+                        
 		}
 	}
 
