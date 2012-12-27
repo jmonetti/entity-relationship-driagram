@@ -1,11 +1,9 @@
 package mereditor.interfaz.swt.figuras;
 
 
-import javax.swing.JEditorPane;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JViewport;
+import mereditor.modelo.Atributo;
+import mereditor.modelo.Entidad;
+import mereditor.representacion.PList;
 
 import org.eclipse.draw2d.BorderLayout;
 import org.eclipse.draw2d.ChopboxAnchor;
@@ -20,10 +18,6 @@ import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.swt.graphics.Color;
 
-import mereditor.modelo.Atributo;
-import mereditor.modelo.Entidad;
-import mereditor.representacion.PList;
-
 
 public class EntidadLogicaFigure extends EntidadFigure {
 
@@ -32,7 +26,7 @@ public class EntidadLogicaFigure extends EntidadFigure {
 
 
 	//protected PanelEntidad panel;
-	
+
 	/*public PanelEntidad getPanel() {
 		return panel;
 	}
@@ -45,41 +39,41 @@ public class EntidadLogicaFigure extends EntidadFigure {
 		super(entidad);
 		//this.setRepresentacion(EstilosFiguras.get(Entidad.class, this.componente.getTipo()));
 	}
-	
+
 	@Override
 	protected void init() {
 		this.setBorder(new LineBorder(this.lineColor, this.lineWidth, this.lineStyle));
 		this.setBackgroundColor(this.backColor);
 		ToolbarLayout layout = new ToolbarLayout();
-	    setLayoutManager(layout);	
-	    setBorder(new LineBorder(ColorConstants.black,1));
-	    setBackgroundColor(classColor);
-	    setOpaque(true);
-	    
+		setLayoutManager(layout);
+		setBorder(new LineBorder(ColorConstants.black,1));
+		setBackgroundColor(classColor);
+		setOpaque(true);
+
 		this.lblName = new Label();
 		this.lblName.setFont(this.font);
 		this.add(lblName, BorderLayout.TOP);
-	    add(this.lblName);
-	    attributeFigure = new CompartmentFigure();
-	    add(attributeFigure);
-		
+		add(this.lblName);
+		attributeFigure = new CompartmentFigure();
+		add(attributeFigure);
 	}
 
 	@Override
 	public void actualizar() {
-		
-	    this.lblName.setText(this.componente.getNombre());
-	    
-		
-		
+
+		this.lblName.setText(this.componente.getNombre());
+
+
+
 	}
 	@Override
 	public Connection conectarAtributo(Figura<Atributo> figura) {
 		this.attributeFigure.add(new Label(figura.lblName.getText()));
+		this.setSize(60,(this.attributeFigure.getChildren().size()*20)+20);
 		return null;
-		
+
 	}
-	
+
 	public void ConectarEntidad (EntidadLogicaFigure Entidad){
 		PolylineConnection c = new PolylineConnection();
 		ChopboxAnchor sourceAnchor = new ChopboxAnchor(this);
@@ -95,7 +89,7 @@ public class EntidadLogicaFigure extends EntidadFigure {
 		decoration.setTemplate(decorationPointList);
 		c.setSourceDecoration(decoration);
 	}
-	
+
 	public CompartmentFigure getAttributeFigure() {
 		return attributeFigure;
 	}
@@ -110,8 +104,7 @@ public class EntidadLogicaFigure extends EntidadFigure {
 			if (repr.<PList> get("Posicion") != null) {
 				Rectangle rect = new Rectangle(repr.<PList> get("Posicion").<Integer> get("x"),
 						repr.<PList> get("Posicion").<Integer> get("y"), repr.<PList> get(
-								"Dimension").<Integer> get("ancho"), repr.<PList> get("Dimension")
-								.<Integer> get("alto"));
+								"Dimension").<Integer> get("ancho"),this.attributeFigure.getChildren().size()*10);
 
 				this.setBounds(rect);
 			}

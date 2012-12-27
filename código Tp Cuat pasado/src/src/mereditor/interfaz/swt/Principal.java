@@ -33,7 +33,6 @@ import mereditor.modelo.Proyecto;
 import mereditor.modelo.ProyectoProxy;
 import mereditor.modelo.Transformacion;
 import mereditor.modelo.Validacion.EstadoValidacion;
-import mereditor.modelo.base.Componente;
 import mereditor.modelo.validacion.Observacion;
 import mereditor.xml.ParserXml;
 
@@ -64,7 +63,6 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.ToolBar;
-import org.eclipse.swt.widgets.TreeItem;
 import org.w3c.dom.Document;
 
 /**
@@ -128,7 +126,7 @@ public class Principal extends Observable implements FigureListener {
 	 * Indica si la vista es l�gica
 	 */
 	private boolean esLogico = false;
-	
+
 	public boolean isVistaLogica() {
 		return esLogico;
 	}
@@ -178,7 +176,7 @@ public class Principal extends Observable implements FigureListener {
 	public static Image getIcono(String nombre) {
 		return loadImagen(PATH_ICONOS + nombre);
 	}
-	
+
 	private static Image loadImagen(String path) {
 		Image img = new Image(Display.getDefault(), Principal.class.getResourceAsStream(path));
 		return img;
@@ -230,7 +228,7 @@ public class Principal extends Observable implements FigureListener {
 
 		// Construir y agregar los controles.
 		MenuBuilder.build(this);
-                
+
 		this.toolBar = ToolBarBuilder.build(this);
 		this.sashForm = new SashForm(this.shell, SWT.HORIZONTAL);
 		TreeManager.build(this.sashForm);
@@ -295,81 +293,95 @@ public class Principal extends Observable implements FigureListener {
 			}
 		}
 	}
-        
-        
-        
-        
-        /**
+
+
+
+
+	/**
 	 * Elimina del arbol y los xml un logico q no es el ultimo generado
 	 * 
 	 * @throws Exception
 	 */
 	public void eliminarItem(Diagrama dia) {
-		
-            /* Le paso el nombre del diagrama que coincide con el text de un item para eliminarlo del arbol de items*/
-                 TreeManager.eliminarItem(dia.getNombre());
-                 this.proyecto.eliminar(dia);
-                 
-                 
+
+		/* Le paso el nombre del diagrama que coincide con el text de un item para eliminarlo del arbol de items*/
+		TreeManager.eliminarItem(dia.getNombre());
+		this.proyecto.eliminar(dia);
+
+
 	}
-        
-        
-        	/**
+
+
+	/**
 	 * Pasaje del modelo actual a logico
 	 */
-	public void pasajeLogicoDiagrama(int tipo) {             
-            
-            /*Me fijo si ya existia una transformacion de ese diagrama en el proyecto*/
-        //    this.proyecto.getDiagramas().
-            /* Valido el diagrama que se quiere pasar a logico por ahora le pongo != null ya siempre tira q no es valido*/
-      if(this.proyecto.getDiagramaActual().validar()!=null){
-                
-        DiagramaControl diagramaLogico =   Transformacion.getInstance().tranformarALogico(this.proyecto.getDiagramaActual(), proyecto, tipo);
+	public void pasajeLogicoDiagrama(int tipo) {
 
-        DiagramaControl dia=this.proyecto.contiene_diagrama(diagramaLogico.getNombre());
-        
-       
-        if(dia!=null){
-                System.out.println("Se elimina");
-            
-         this.eliminarItem(dia);
-                
-        }
-                /*Ahora inserto la nueva transformacion al proyecto*/
-                diagramaLogico.setLogico(true);
-                proyecto.agregarSoloAlProyecto(diagramaLogico);
-     TreeManager.agregarADiagramaActual(diagramaLogico);
-                 this.proyecto.setDiagramaActual(diagramaLogico.getId()); 
-               
-                    
-        
-       
-        // Notificar a la toolbar que hay un proyecto abierto.
-            this.setChanged();
-            this.notifyObservers();
-         
+		/*Me fijo si ya existia una transformacion de ese diagrama en el proyecto*/
+		//    this.proyecto.getDiagramas().
+		/* Valido el diagrama que se quiere pasar a logico por ahora le pongo != null ya siempre tira q no es valido*/
+		if(this.proyecto.getDiagramaActual().validar()!=null){
 
-        this.actualizarVista();
-     
-        this.modificado(true);
-        
-  
-                
+			DiagramaControl diagramaLogico =   Transformacion.getInstance().tranformarALogico(this.proyecto.getDiagramaActual(), proyecto, tipo);
 
-        System.out.println("Se pasa al logico");
-	}else  System.out.println("El diagrama actual no es valido");
-        }
+			DiagramaControl dia=this.proyecto.contiene_diagrama(diagramaLogico.getNombre());
+
+
+			if(dia!=null){
+				System.out.println("Se elimina");
+
+				this.eliminarItem(dia);
+
+			}
+
+			/*Ahora inserto la nueva transformacion al proyecto*/
+			diagramaLogico.setLogico(true);
+
+
+
+
+			// Notificar a la toolbar que hay un proyecto abierto.
+			/*			this.setChanged();
+			this.notifyObservers();
+
+
+			this.actualizarVista();
+
+			this.modificado(true);*/
+
+			proyecto.agregarSoloAlProyecto(diagramaLogico);
+			TreeManager.agregarADiagramaActual(diagramaLogico);
+			//this.proyecto.setDiagramaActual(diagramaLogico.getId());
+
+			guardarProyecto();
+
+			String path = this.proyecto.getPath();
+			Principal.getInstance().setVistaLogica(true);
+
+			try {
+				ParserXml modelo = new ParserXml(path);
+				this.proyecto = modelo.parsear();
+
+				this.proyecto.setDiagramaActual(diagramaLogico.getId());
+				this.cargarProyecto();
+			} catch (Exception e) {
+				e.printStackTrace();
+				error(e.getMessage());
+			}
+			Principal.getInstance().setVistaLogica(false);
+
+			System.out.println("Se pasa al logico");
+		}else  System.out.println("El diagrama actual no es valido");
+	}
 
 	/**
 	 * Abre un proyecto.
 	 */
 	public void abrirProyecto() {
-		
-		//TODO: descomentar para probar la vista l�gica
-		//Principal.getInstance().setVistaLogica(true);
+
 		
 		int resultado = this.preguntarGuardar();
-	
+
 		if (resultado != SWT.CANCEL) {
 			FileDialog fileDialog = new FileDialog(this.shell);
 			fileDialog.setFilterExtensions(extensionProyecto);
@@ -379,7 +391,7 @@ public class Principal extends Observable implements FigureListener {
 				try {
 					ParserXml modelo = new ParserXml(path);
 					this.proyecto = modelo.parsear();
-                                       
+
 					this.cargarProyecto();
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -389,140 +401,123 @@ public class Principal extends Observable implements FigureListener {
 		}
 	}
 
-        
-   public Diagrama tienelogico1(String dia) {
-            
-        
-             
-          
-            boolean encontrado=false;
-            Diagrama logico=null;
-            Diagrama dia1=null;
-            Iterator it = this.proyecto.getDiagramas().iterator();
-            
-            String nombre_macheo="DiagramaLogico-"+dia;
-            System.out.println("Nombre macheo logico= "+nombre_macheo);
-            
-	        while(it.hasNext()) {
 
-                dia1 = (Diagrama) it.next();
-              
-                    if(dia1.getNombre()!=null&&dia1.getNombre().contains("Logico")&&dia1.getNombre().equals(nombre_macheo)){
-                           System.out.println("logico encontrado= "+ dia1.getNombre());
-                           logico=dia1;
-                    }
-                           
-         
-                    
-                }
-                    
-            
-      
+	public Diagrama tienelogico1(String dia) {
 
- 
-                return logico;
-           }       
-   
-   
-           
+		boolean encontrado=false;
+		Diagrama logico=null;
+		Diagrama dia1=null;
+		Iterator it = this.proyecto.getDiagramas().iterator();
 
-        	/**
+		String nombre_macheo="DiagramaLogico-"+dia;
+		System.out.println("Nombre macheo logico= "+nombre_macheo);
+
+		while(it.hasNext()) {
+
+			dia1 = (Diagrama) it.next();
+
+			if(dia1.getNombre()!=null&&dia1.getNombre().contains("Logico")&&dia1.getNombre().equals(nombre_macheo)){
+				System.out.println("logico encontrado= "+ dia1.getNombre());
+				logico=dia1;
+			}
+
+
+
+		}
+
+
+
+		return logico;
+	}
+
+
+
+
+	/**
 	 * Agrega un logico en el punto del dia activo
 	 */
-	public void agregoLogicoDiagrama(Diagrama diagramaLogico) {             
-         
+	public void agregoLogicoDiagrama(Diagrama diagramaLogico) {
 
-            
-            diagramaLogico.setLogico(true);
-            
-            
-                  
-            
-                String nombreDerasociado=diagramaLogico.getNombre().replace("DiagramaLogico-","");     
-                Iterator it = this.proyecto.getDiagramas().iterator();
-                Diagrama dia=null;
-                boolean enc=false;
-	        while(it.hasNext()&&!enc) {
 
-                dia = (Diagrama) it.next();
-              
-                    if(dia.getNombre()!=null&&dia.getNombre().equals(nombreDerasociado)){
-                           System.out.println("se agrego a su der el cual es= "+ dia.getNombre());
-                          dia.agregar(diagramaLogico);
-                           enc=true;   
-                    }
-                }
-                
-            
-            
-            
-           proyecto.agregarSoloAlProyecto(diagramaLogico);
-            TreeManager.agregarADiagramaActual(diagramaLogico);
-               
-               
-                    
-        
-       
-        // Notificar a la toolbar que hay un proyecto abierto.
-            this.setChanged();
-            this.notifyObservers();
-         
-            this.actualizarVista();    
-            this.modificado(true);
-        
-  
-            System.out.println("Se agrego un logico en el item activo en el treemanagar");                
+		diagramaLogico.setLogico(true);
 
-}
-        
+		String nombreDerasociado=diagramaLogico.getNombre().replace("DiagramaLogico-","");
+		Iterator it = this.proyecto.getDiagramas().iterator();
+		Diagrama dia=null;
+		boolean enc=false;
+		while(it.hasNext()&&!enc) {
 
-        
-        
+			dia = (Diagrama) it.next();
+
+			if(dia.getNombre()!=null&&dia.getNombre().equals(nombreDerasociado)){
+				System.out.println("se agrego a su der el cual es= "+ dia.getNombre());
+				dia.agregar(diagramaLogico);
+				enc=true;
+			}
+		}
+
+
+		proyecto.agregarSoloAlProyecto(diagramaLogico);
+		TreeManager.agregarADiagramaActual(diagramaLogico);
+
+		// Notificar a la toolbar que hay un proyecto abierto.
+		this.setChanged();
+		this.notifyObservers();
+
+		this.actualizarVista();
+		this.modificado(true);
+
+
+		System.out.println("Se agrego un logico en el item activo en el treemanagar");
+
+	}
+
+
 	/**
 	 * Carga el proyecto actual.
 	 */
 	private void cargarProyecto() {
-		this.proyecto
-				.setDiagramaActual(this.proyecto.getDiagramaRaiz().getId());
+		if (!this.esLogico)
+			this.proyecto.setDiagramaActual(this.proyecto.getDiagramaRaiz().getId());
 		this.panelDiagrama = new DiagramaFigura(this.figureCanvas,
 				this.proyecto);
 		this.panelDiagrama.actualizar();
 		// Carga inicial del arbol.
 		TreeManager.cargar(this.proyecto);
-                 System.out.println("Diagramas logicos:");
-                 
-                 
-                 
-                 
-                   Iterator it = this.proyecto.getDiagramas().iterator();
-            Diagrama dia=null;
-                   
-	        while(it.hasNext()) {
+		System.out.println("Diagramas logicos:");
 
-                dia = (Diagrama) it.next();
-              
-                    if(dia.getNombre()!=null&&dia.getNombre().contains("Logico")){
-                           System.out.println("dia logico cargado= "+ dia.getNombre());
-                           
-                     
-                            }
-                }
-                
-                
-                TreeManager.agregar_logicos();
-		
+
+
+
+		Iterator it = this.proyecto.getDiagramas().iterator();
+		Diagrama dia=null;
+
+		while(it.hasNext()) {
+
+			dia = (Diagrama) it.next();
+
+			if(dia.getNombre()!=null&&dia.getNombre().contains("Logico")){
+				System.out.println("dia logico cargado= "+ dia.getNombre());
+
+
+			}
+		}
+
+
+		//TreeManager.agregar_logicos();
+
 		// Notificar a la toolbar que hay un proyecto abierto.
-                
-                
-                // System.out.println(this.proyecto.getDiagramasLogicos());
-            
-                this.mostrarArbol(true);
+
+
+		// System.out.println(this.proyecto.getDiagramasLogicos());
+
+		this.mostrarArbol(true);
 		this.setChanged();
 		this.notifyObservers();
 
 		this.modificado(true);
 		this.actualizarEstado();
-            
+
 	}
 
 	/**
@@ -537,7 +532,7 @@ public class Principal extends Observable implements FigureListener {
 					this.proyecto.getValidacion().getEstado().toString(),
 					this.proyecto.getDiagramaActual().getNombre(),
 					this.proyecto.getDiagramaActual().getValidacion()
-							.getEstado().toString());
+					.getEstado().toString());
 		}
 
 		this.lblStatus.setText(status);
@@ -575,9 +570,6 @@ public class Principal extends Observable implements FigureListener {
 	 */
 	public void guardarProyecto(boolean showDialog) {
 		String path = this.proyecto.getPath();
-		
-
-			
 
 		if (path == null || showDialog) {
 			FileDialog fileDialog = new FileDialog(this.shell, SWT.SAVE);
@@ -591,28 +583,27 @@ public class Principal extends Observable implements FigureListener {
 			this.proyecto.setPath(path);
 			ParserXml modelo;
 			try {
-				
-				
-//					Diagrama d = Transformacion.getInstance().tranformarALogico(this.proyecto.getDiagramaActual(), proyecto);
-//					proyecto.agregarSoloAlProyecto(d);
-//					this.actualizarVista();
-//					TreeManager.agregarADiagramaActual(d);
-//					this.modificado(true);
-				
-				
-				
+
+
+				//					Diagrama d = Transformacion.getInstance().tranformarALogico(this.proyecto.getDiagramaActual(), proyecto);
+				//					proyecto.agregarSoloAlProyecto(d);
+				//					this.actualizarVista();
+				//					TreeManager.agregarADiagramaActual(d);
+				//					this.modificado(true);
+
+
 				//DER
 				modelo = new ParserXml(this.proyecto);
 				this.guardarXml(modelo.generarXmlProyecto(), path); //genero el xml de referencia al resto de los xml
-				
+
 				this.guardarXml(modelo.generarXmlComponentes(), dir + this.proyecto.getComponentesPath());
 				this.guardarXml(modelo.generarXmlRepresentacion(), dir + this.proyecto.getRepresentacionPath());
-				
+
 				//Logico
 				modelo = new ParserXml(this.proyecto);
 				this.guardarXml(modelo.generarXmlComponentesLogicos(), dir + this.proyecto.getComponentesPathLogico());
 				this.guardarXml(modelo.generarXmlRepresentacionLogico(), dir + this.proyecto.getRepresentacionPathLogico());
-				
+
 			} catch (Exception e) {
 				this.error("Ocurrió un error al guardar el proyecto.");
 				e.printStackTrace();
@@ -669,10 +660,10 @@ public class Principal extends Observable implements FigureListener {
 	 */
 	public void actualizarVista() {
 		this.panelDiagrama.actualizar();
-                 // Notificar a la toolbar que hay un proyecto abierto.
-            this.setChanged();
-            this.notifyObservers();
-         
+		// Notificar a la toolbar que hay un proyecto abierto.
+		this.setChanged();
+		this.notifyObservers();
+
 	}
 
 	/**
@@ -978,7 +969,7 @@ public class Principal extends Observable implements FigureListener {
 			this.proyecto.getValidacion().setEstado(
 					EstadoValidacion.SIN_VALIDAR);
 			this.proyecto.getDiagramaActual().getValidacion()
-					.setEstado(EstadoValidacion.SIN_VALIDAR);
+			.setEstado(EstadoValidacion.SIN_VALIDAR);
 
 			this.actualizarEstado();
 		}
@@ -996,13 +987,14 @@ public class Principal extends Observable implements FigureListener {
 	}
 
 	public void dibujarDiagramaLogico() {
+
 		String idActual = this.proyecto.getDiagramaActual().getId();
 		Diagrama actual = this.proyecto.getDiagramaActual();
 		this.proyecto.setNombre("mod!");
-				this.actualizarVista();
-				this.actualizarEstado();
-			
-		
-		
+		this.actualizarVista();
+		this.actualizarEstado();
+
+
+
 	}
 }
